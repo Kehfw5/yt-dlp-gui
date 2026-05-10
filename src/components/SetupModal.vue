@@ -23,19 +23,19 @@ const goToSettings = () => {
   >
     <n-flex vertical :size="16">
       <n-alert type="error" :bordered="false">
-        {{ $t('setup.ytdlpDesc') }}
+        {{ $t("setup.ytdlpDesc") }}
       </n-alert>
       <n-text depth="3" style="font-size: 13px">
-        {{ $t('setup.ytdlpHint') }}
+        {{ $t("setup.ytdlpHint") }}
       </n-text>
     </n-flex>
     <template #action>
       <n-flex justify="end">
         <n-button @click="statusStore.showYtdlpSetupModal = false">
-          {{ $t('common.cancel') }}
+          {{ $t("common.cancel") }}
         </n-button>
         <n-button type="primary" @click="goToSettings">
-          {{ $t('setup.goToSettings') }}
+          {{ $t("setup.goToSettings") }}
         </n-button>
       </n-flex>
     </template>
@@ -52,19 +52,19 @@ const goToSettings = () => {
   >
     <n-flex vertical :size="16">
       <n-alert type="warning" :bordered="false">
-        {{ $t('setup.denoDesc') }}
+        {{ $t("setup.denoDesc") }}
       </n-alert>
       <n-text depth="3" style="font-size: 13px">
-        {{ $t('setup.denoHint') }}
+        {{ $t("setup.denoHint") }}
       </n-text>
     </n-flex>
     <template #action>
       <n-flex justify="end">
         <n-button @click="statusStore.showDenoSetupModal = false">
-          {{ $t('setup.later') }}
+          {{ $t("setup.later") }}
         </n-button>
         <n-button type="primary" @click="goToSettings">
-          {{ $t('setup.goToSettings') }}
+          {{ $t("setup.goToSettings") }}
         </n-button>
       </n-flex>
     </template>

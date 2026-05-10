@@ -36,7 +36,10 @@ export const useVideoStore = defineStore("video", () => {
   const selectedPlaylistItems = ref<number[]>([]);
 
   /** 获取当前有效的 Cookie 参数 */
-  const getCookieArgs = async (): Promise<{ cookieFile: string | null; cookieBrowser: string | null }> => {
+  const getCookieArgs = async (): Promise<{
+    cookieFile: string | null;
+    cookieBrowser: string | null;
+  }> => {
     const settingStore = useSettingStore();
     const { cookieMode, cookieText, cookieFile, cookieBrowser } = settingStore;
     if (cookieMode === "text" && cookieText.trim()) {
@@ -99,14 +102,10 @@ export const useVideoStore = defineStore("video", () => {
 
       const formats: VideoFormat[] = videoInfo.value.formats || [];
       videoFormats.value = formats
-        .filter(
-          (f) => f.vcodec && f.vcodec !== "none" && (!f.acodec || f.acodec === "none"),
-        )
+        .filter((f) => f.vcodec && f.vcodec !== "none" && (!f.acodec || f.acodec === "none"))
         .sort((a, b) => (b.height || 0) - (a.height || 0));
       audioFormats.value = formats
-        .filter(
-          (f) => f.acodec && f.acodec !== "none" && (!f.vcodec || f.vcodec === "none"),
-        )
+        .filter((f) => f.acodec && f.acodec !== "none" && (!f.vcodec || f.vcodec === "none"))
         .sort((a, b) => (b.abr || 0) - (a.abr || 0));
 
       // YouTube URL 且 Deno 未安装时提示

@@ -35,9 +35,7 @@ export const useDownloadStore = defineStore("download", () => {
   let saveTimer: ReturnType<typeof setTimeout> | null = null;
 
   /** 当前正在下载的任务数 */
-  const activeCount = computed(
-    () => tasks.value.filter((t) => t.status === "downloading").length,
-  );
+  const activeCount = computed(() => tasks.value.filter((t) => t.status === "downloading").length);
 
   /** 尝试启动队列中的下一个任务 */
   const tryStartNext = async () => {
@@ -111,9 +109,7 @@ export const useDownloadStore = defineStore("download", () => {
       }
 
       // Filter out completed tasks whose output files no longer exist
-      const completedWithFile = saved.filter(
-        (t) => t.status === "completed" && t.outputFile,
-      );
+      const completedWithFile = saved.filter((t) => t.status === "completed" && t.outputFile);
       if (completedWithFile.length > 0) {
         try {
           const paths = completedWithFile.map((t) => t.outputFile!);
@@ -159,9 +155,7 @@ export const useDownloadStore = defineStore("download", () => {
       );
       appWindow.setProgressBar({ status: ProgressBarStatus.Normal, progress: avg });
     } else if (paused.length > 0) {
-      const avg = Math.round(
-        paused.reduce((sum, t) => sum + (t.percent || 0), 0) / paused.length,
-      );
+      const avg = Math.round(paused.reduce((sum, t) => sum + (t.percent || 0), 0) / paused.length);
       appWindow.setProgressBar({ status: ProgressBarStatus.Paused, progress: avg });
     } else {
       appWindow.setProgressBar({ status: ProgressBarStatus.None });
@@ -199,7 +193,10 @@ export const useDownloadStore = defineStore("download", () => {
         task.percent = 100;
         task.speed = "";
         if (event.payload.outputFile) task.outputFile = event.payload.outputFile;
-        notify(i18n.global.t("downloads.notifyComplete"), task.title || i18n.global.t("downloads.notifyCompleteBody"));
+        notify(
+          i18n.global.t("downloads.notifyComplete"),
+          task.title || i18n.global.t("downloads.notifyCompleteBody"),
+        );
       }
       updateTaskbarProgress();
       tryStartNext();
@@ -300,10 +297,7 @@ export const useDownloadStore = defineStore("download", () => {
   /** 清空所有已完成、失败、已取消的任务 */
   const clearFinished = () => {
     tasks.value = tasks.value.filter(
-      (t) =>
-        t.status !== "completed" &&
-        t.status !== "error" &&
-        t.status !== "cancelled",
+      (t) => t.status !== "completed" && t.status !== "error" && t.status !== "cancelled",
     );
   };
 

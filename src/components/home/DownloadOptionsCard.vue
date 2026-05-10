@@ -41,39 +41,23 @@ const audioFormatOptions = computed(() =>
   <n-card :title="$t('detail.downloadMethod')" size="small">
     <n-flex vertical :size="12">
       <n-radio-group v-model:value="downloadMode" size="small">
-        <n-radio-button value="default">{{ $t('common.default') }}</n-radio-button>
-        <n-radio-button value="video">{{ $t('detail.videoOnly') }}</n-radio-button>
-        <n-radio-button value="audio">{{ $t('detail.audioOnly') }}</n-radio-button>
+        <n-radio-button value="default">{{ $t("common.default") }}</n-radio-button>
+        <n-radio-button value="video">{{ $t("detail.videoOnly") }}</n-radio-button>
+        <n-radio-button value="audio">{{ $t("detail.audioOnly") }}</n-radio-button>
       </n-radio-group>
 
-      <n-flex
-        v-if="downloadMode !== 'audio' && videoFormatOptions.length"
-        align="center"
-        :size="8"
-      >
+      <n-flex v-if="downloadMode !== 'audio' && videoFormatOptions.length" align="center" :size="8">
         <n-text depth="3" style="font-size: 13px; flex-shrink: 0">
-          {{ $t('detail.video') }}
+          {{ $t("detail.video") }}
         </n-text>
-        <n-select
-          v-model:value="selectedVideoFormat"
-          :options="videoFormatOptions"
-          size="small"
-        />
+        <n-select v-model:value="selectedVideoFormat" :options="videoFormatOptions" size="small" />
       </n-flex>
 
-      <n-flex
-        v-if="downloadMode !== 'video' && audioFormatOptions.length"
-        align="center"
-        :size="8"
-      >
+      <n-flex v-if="downloadMode !== 'video' && audioFormatOptions.length" align="center" :size="8">
         <n-text depth="3" style="font-size: 13px; flex-shrink: 0">
-          {{ $t('detail.audio') }}
+          {{ $t("detail.audio") }}
         </n-text>
-        <n-select
-          v-model:value="selectedAudioFormat"
-          :options="audioFormatOptions"
-          size="small"
-        />
+        <n-select v-model:value="selectedAudioFormat" :options="audioFormatOptions" size="small" />
       </n-flex>
     </n-flex>
   </n-card>

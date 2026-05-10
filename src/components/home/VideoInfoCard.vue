@@ -16,8 +16,7 @@ const formatDuration = (seconds: number): string => {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   const s = Math.floor(seconds % 60);
-  if (h > 0)
-    return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  if (h > 0) return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
   return `${m}:${String(s).padStart(2, "0")}`;
 };
 
@@ -71,7 +70,7 @@ watch(
             <template #icon>
               <n-icon size="12"><icon-mdi-playlist-play /></n-icon>
             </template>
-            {{ $t('detail.playlistTag', { n: playlistCount }) }}
+            {{ $t("detail.playlistTag", { n: playlistCount }) }}
           </n-tag>
         </n-flex>
         <n-ellipsis :line-clamp="2" :tooltip="false" class="video-title">
@@ -79,20 +78,12 @@ watch(
         </n-ellipsis>
         <n-flex :size="12" align="center" style="margin-top: 8px">
           <n-text depth="3" style="font-size: 12px">
-            <icon-mdi-account
-              style="vertical-align: -2px; margin-right: 2px"
-            />
-            {{ videoInfo.uploader || $t('common.unknown') }}
+            <icon-mdi-account style="vertical-align: -2px; margin-right: 2px" />
+            {{ videoInfo.uploader || $t("common.unknown") }}
           </n-text>
-          <n-text
-            v-if="videoInfo.view_count"
-            depth="3"
-            style="font-size: 12px"
-          >
-            <icon-mdi-eye
-              style="vertical-align: -2px; margin-right: 2px"
-            />
-            {{ formatViewCount(videoInfo.view_count) }}{{ $t('detail.views') }}
+          <n-text v-if="videoInfo.view_count" depth="3" style="font-size: 12px">
+            <icon-mdi-eye style="vertical-align: -2px; margin-right: 2px" />
+            {{ formatViewCount(videoInfo.view_count) }}{{ $t("detail.views") }}
           </n-text>
         </n-flex>
       </div>

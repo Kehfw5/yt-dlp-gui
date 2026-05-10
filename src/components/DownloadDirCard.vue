@@ -35,7 +35,7 @@ const handleSelectDir = async () => {
             <icon-mdi-folder-open-outline />
           </n-icon>
         </template>
-        {{ $t('common.select') }}
+        {{ $t("common.select") }}
       </n-button>
     </n-flex>
   </n-card>

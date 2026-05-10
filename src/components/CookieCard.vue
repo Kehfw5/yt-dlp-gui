@@ -79,15 +79,11 @@ const handleSelectFile = async () => {
   <n-card title="Cookie" size="small">
     <n-flex vertical :size="12">
       <n-text depth="3" style="font-size: 13px">
-        {{ $t('cookie.desc') }}
+        {{ $t("cookie.desc") }}
       </n-text>
 
       <n-radio-group v-model:value="settingStore.cookieMode" size="small">
-        <n-radio-button
-          v-for="opt in cookieModeOptions"
-          :key="opt.value"
-          :value="opt.value"
-        >
+        <n-radio-button v-for="opt in cookieModeOptions" :key="opt.value" :value="opt.value">
           {{ opt.label }}
         </n-radio-button>
       </n-radio-group>
@@ -107,7 +103,7 @@ const handleSelectFile = async () => {
                 <icon-mdi-content-paste />
               </n-icon>
             </template>
-            {{ $t('home.pasteFromClipboard') }}
+            {{ $t("home.pasteFromClipboard") }}
           </n-button>
           <n-button
             size="small"
@@ -119,7 +115,7 @@ const handleSelectFile = async () => {
                 <icon-mdi-content-save-outline />
               </n-icon>
             </template>
-            {{ $t('common.save') }}
+            {{ $t("common.save") }}
           </n-button>
         </n-flex>
       </template>
@@ -139,14 +135,14 @@ const handleSelectFile = async () => {
                 <icon-mdi-file-search-outline />
               </n-icon>
             </template>
-            {{ $t('common.select') }}
+            {{ $t("common.select") }}
           </n-button>
         </n-flex>
       </template>
 
       <template v-if="settingStore.cookieMode === 'browser'">
         <n-text depth="3" style="font-size: 12px">
-          {{ $t('cookie.browserDesc') }}
+          {{ $t("cookie.browserDesc") }}
         </n-text>
         <n-select
           v-model:value="settingStore.cookieBrowser"

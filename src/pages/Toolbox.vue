@@ -40,7 +40,7 @@ const handlePaste = async () => {
         <template #icon>
           <n-icon><icon-mdi-content-paste /></n-icon>
         </template>
-        {{ $t('common.paste') }}
+        {{ $t("common.paste") }}
       </n-button>
     </n-flex>
 

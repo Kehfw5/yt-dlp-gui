@@ -1,10 +1,4 @@
-import {
-  MessageApi,
-  DialogApi,
-  NotificationApi,
-  LoadingBarApi,
-  ModalApi,
-} from "naive-ui";
+import { MessageApi, DialogApi, NotificationApi, LoadingBarApi, ModalApi } from "naive-ui";
 
 declare global {
   interface Window {

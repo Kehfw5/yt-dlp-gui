@@ -14,7 +14,7 @@ const statusStore = useStatusStore();
     :style="{ width: '480px' }"
   >
     <n-flex vertical :size="12">
-      <n-alert type="warning" :bordered="false">{{ $t('cookie.verificationDesc') }}</n-alert>
+      <n-alert type="warning" :bordered="false">{{ $t("cookie.verificationDesc") }}</n-alert>
       <CookieCard />
     </n-flex>
   </n-modal>

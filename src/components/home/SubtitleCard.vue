@@ -5,16 +5,43 @@ import type { VideoInfo } from "@/types";
 const { t } = useI18n();
 
 const LANG_NAMES: Record<string, string> = {
-  zh: "中文", "zh-Hans": "中文(简体)", "zh-Hant": "中文(繁体)",
-  "zh-CN": "中文(简体)", "zh-TW": "中文(繁体)", "zh-HK": "中文(香港)",
-  en: "English", "en-US": "English(US)", "en-GB": "English(UK)",
-  ja: "日本語", ko: "한국어", fr: "Français", de: "Deutsch",
-  es: "Español", pt: "Português", ru: "Русский", ar: "العربية",
-  it: "Italiano", nl: "Nederlands", pl: "Polski", tr: "Türkçe",
-  vi: "Tiếng Việt", th: "ไทย", id: "Bahasa Indonesia", ms: "Bahasa Melayu",
-  hi: "हिन्दी", uk: "Українська", cs: "Čeština", sv: "Svenska",
-  da: "Dansk", fi: "Suomi", no: "Norsk", el: "Ελληνικά",
-  he: "עברית", hu: "Magyar", ro: "Română", bg: "Български",
+  zh: "中文",
+  "zh-Hans": "中文(简体)",
+  "zh-Hant": "中文(繁体)",
+  "zh-CN": "中文(简体)",
+  "zh-TW": "中文(繁体)",
+  "zh-HK": "中文(香港)",
+  en: "English",
+  "en-US": "English(US)",
+  "en-GB": "English(UK)",
+  ja: "日本語",
+  ko: "한국어",
+  fr: "Français",
+  de: "Deutsch",
+  es: "Español",
+  pt: "Português",
+  ru: "Русский",
+  ar: "العربية",
+  it: "Italiano",
+  nl: "Nederlands",
+  pl: "Polski",
+  tr: "Türkçe",
+  vi: "Tiếng Việt",
+  th: "ไทย",
+  id: "Bahasa Indonesia",
+  ms: "Bahasa Melayu",
+  hi: "हिन्दी",
+  uk: "Українська",
+  cs: "Čeština",
+  sv: "Svenska",
+  da: "Dansk",
+  fi: "Suomi",
+  no: "Norsk",
+  el: "Ελληνικά",
+  he: "עברית",
+  hu: "Magyar",
+  ro: "Română",
+  bg: "Български",
 };
 
 /** 需要过滤的非字幕项 */
@@ -60,7 +87,12 @@ const autoOptions = computed(() =>
 
 /** 合并的分组选项 */
 const groupedOptions = computed(() => {
-  const groups: { type: "group"; label: string; key: string; children: { label: string; value: string }[] }[] = [];
+  const groups: {
+    type: "group";
+    label: string;
+    key: string;
+    children: { label: string; value: string }[];
+  }[] = [];
   if (manualOptions.value.length) {
     groups.push({
       type: "group",
@@ -80,9 +112,7 @@ const groupedOptions = computed(() => {
   return groups;
 });
 
-const hasSubtitles = computed(() =>
-  manualOptions.value.length > 0 || autoOptions.value.length > 0,
-);
+const hasSubtitles = computed(() => manualOptions.value.length > 0 || autoOptions.value.length > 0);
 </script>
 
 <template>
@@ -99,7 +129,7 @@ const hasSubtitles = computed(() =>
       />
     </template>
     <n-text v-else depth="3" style="font-size: 13px">
-      {{ $t('detail.noSubtitles') }}
+      {{ $t("detail.noSubtitles") }}
     </n-text>
   </n-card>
 </template>

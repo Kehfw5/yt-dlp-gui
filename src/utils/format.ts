@@ -37,7 +37,10 @@ export const formatError = (raw: string): string => {
 export const showErrorDialog = (raw: string) => {
   const friendly = formatError(raw);
   // 清理后的原始信息（去掉 ERROR: 前缀），用于判断是否有额外信息值得展示
-  const cleaned = raw.trim().replace(/^ERROR:\s*(\[.*?\]\s*\w+:\s*)?/i, "").trim();
+  const cleaned = raw
+    .trim()
+    .replace(/^ERROR:\s*(\[.*?\]\s*\w+:\s*)?/i, "")
+    .trim();
   // 只有翻译后的友好信息和清理后的原始信息不同时，才展示可展开的原始详情
   const hasRawDetail = friendly !== cleaned && raw.trim().length > 0;
 

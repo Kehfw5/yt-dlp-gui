@@ -125,15 +125,15 @@ const handleSave = async (thumb: ThumbnailInfo) => {
         <template #icon>
           <n-icon><icon-mdi-arrow-left /></n-icon>
         </template>
-        {{ $t('common.back') }}
+        {{ $t("common.back") }}
       </n-button>
-      <n-text strong style="font-size: 15px">{{ $t('toolbox.thumbnailTitle') }}</n-text>
+      <n-text strong style="font-size: 15px">{{ $t("toolbox.thumbnailTitle") }}</n-text>
     </n-flex>
 
     <n-card size="small">
       <n-flex vertical :size="12">
         <n-text depth="3" style="font-size: 13px">
-          {{ $t('toolbox.thumbnailPageDesc') }}
+          {{ $t("toolbox.thumbnailPageDesc") }}
         </n-text>
         <n-button
           type="primary"
@@ -144,12 +144,16 @@ const handleSave = async (thumb: ThumbnailInfo) => {
           <template #icon>
             <n-icon><icon-mdi-image-search /></n-icon>
           </template>
-          {{ $t('toolbox.fetchThumbnails') }}
+          {{ $t("toolbox.fetchThumbnails") }}
         </n-button>
       </n-flex>
     </n-card>
 
-    <n-card v-if="thumbnails.length" size="small" :title="$t('toolbox.thumbnailCount', { n: thumbnails.length })">
+    <n-card
+      v-if="thumbnails.length"
+      size="small"
+      :title="$t('toolbox.thumbnailCount', { n: thumbnails.length })"
+    >
       <n-list hoverable clickable bordered>
         <n-list-item v-for="thumb in thumbnails" :key="thumb.id || thumb.url">
           <n-flex align="center" :size="12" :wrap="false">
@@ -172,7 +176,7 @@ const handleSave = async (thumb: ThumbnailInfo) => {
                 <template #icon>
                   <n-icon><icon-mdi-content-save-outline /></n-icon>
                 </template>
-                {{ $t('common.saveAs') }}
+                {{ $t("common.saveAs") }}
               </n-button>
             </n-flex>
           </n-flex>

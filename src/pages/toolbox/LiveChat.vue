@@ -26,18 +26,36 @@ const useRegex = ref(false);
 
 const urlValid = computed(() => isValidUrl(toolUrl.value.trim()));
 
-const fieldDefs = computed(() => [
-  { key: "time", label: t("toolbox.time") },
-  { key: "author", label: t("toolbox.sender") },
-  { key: "message", label: t("toolbox.message") },
-  { key: "msg_type", label: t("toolbox.type") },
-  { key: "amount", label: t("toolbox.tipAmount") },
-  { key: "channel_id", label: t("toolbox.channelId") },
-  { key: "timestamp_usec", label: t("toolbox.timestampUs") },
-] as const);
+const fieldDefs = computed(
+  () =>
+    [
+      { key: "time", label: t("toolbox.time") },
+      { key: "author", label: t("toolbox.sender") },
+      { key: "message", label: t("toolbox.message") },
+      { key: "msg_type", label: t("toolbox.type") },
+      { key: "amount", label: t("toolbox.tipAmount") },
+      { key: "channel_id", label: t("toolbox.channelId") },
+      { key: "timestamp_usec", label: t("toolbox.timestampUs") },
+    ] as const,
+);
 
-type FieldKey = "time" | "author" | "message" | "msg_type" | "amount" | "channel_id" | "timestamp_usec";
-const allFieldKeys: FieldKey[] = ["time", "author", "message", "msg_type", "amount", "channel_id", "timestamp_usec"];
+type FieldKey =
+  | "time"
+  | "author"
+  | "message"
+  | "msg_type"
+  | "amount"
+  | "channel_id"
+  | "timestamp_usec";
+const allFieldKeys: FieldKey[] = [
+  "time",
+  "author",
+  "message",
+  "msg_type",
+  "amount",
+  "channel_id",
+  "timestamp_usec",
+];
 const selectedFields = ref<FieldKey[]>([...allFieldKeys]);
 
 const exportFormat = ref<"json" | "csv">("json");
@@ -82,9 +100,7 @@ const regexError = computed(() => {
 const filteredMessages = computed(() => {
   const re = filterRegex.value;
   if (!re) return messages.value;
-  return messages.value.filter(
-    (m) => re.test(m.message) || re.test(m.author),
-  );
+  return messages.value.filter((m) => re.test(m.message) || re.test(m.author));
 });
 
 watch(debouncedFilter, () => {
@@ -219,15 +235,15 @@ const handleSave = async () => {
         <template #icon>
           <n-icon><icon-mdi-arrow-left /></n-icon>
         </template>
-        {{ $t('common.back') }}
+        {{ $t("common.back") }}
       </n-button>
-      <n-text strong style="font-size: 15px">{{ $t('toolbox.livechatTitle') }}</n-text>
+      <n-text strong style="font-size: 15px">{{ $t("toolbox.livechatTitle") }}</n-text>
     </n-flex>
 
     <n-card size="small">
       <n-flex vertical :size="12">
         <n-text depth="3" style="font-size: 13px">
-          {{ $t('toolbox.livechatPageDesc') }}
+          {{ $t("toolbox.livechatPageDesc") }}
         </n-text>
         <n-button
           type="primary"
@@ -238,12 +254,16 @@ const handleSave = async () => {
           <template #icon>
             <n-icon><icon-mdi-message-text-outline /></n-icon>
           </template>
-          {{ $t('toolbox.fetchChat') }}
+          {{ $t("toolbox.fetchChat") }}
         </n-button>
       </n-flex>
     </n-card>
 
-    <n-card v-if="messages.length" size="small" :title="$t('toolbox.chatCount', { n: messages.length })">
+    <n-card
+      v-if="messages.length"
+      size="small"
+      :title="$t('toolbox.chatCount', { n: messages.length })"
+    >
       <template #header-extra>
         <n-flex align="center" :size="8">
           <n-popover trigger="click" placement="bottom-end">
@@ -252,7 +272,7 @@ const handleSave = async () => {
                 <template #icon>
                   <n-icon><icon-mdi-filter-outline /></n-icon>
                 </template>
-                {{ $t('toolbox.exportFields') }}
+                {{ $t("toolbox.exportFields") }}
               </n-button>
             </template>
             <n-flex vertical :size="8" style="min-width: 140px">
@@ -261,7 +281,7 @@ const handleSave = async () => {
                 :indeterminate="someFieldsSelected"
                 @update:checked="handleFieldSelectAll"
               >
-                {{ $t('common.selectAll') }}
+                {{ $t("common.selectAll") }}
               </n-checkbox>
               <n-checkbox-group v-model:value="selectedFields">
                 <n-flex vertical :size="4">
@@ -290,7 +310,7 @@ const handleSave = async () => {
             <template #icon>
               <n-icon><icon-mdi-content-save-outline /></n-icon>
             </template>
-            {{ $t('toolbox.saveAsCount', { n: exportCount }) }}
+            {{ $t("toolbox.saveAsCount", { n: exportCount }) }}
           </n-button>
         </n-flex>
       </template>
@@ -322,15 +342,13 @@ const handleSave = async () => {
                 .*
               </n-button>
             </template>
-            {{ useRegex ? $t('toolbox.regexEnabled') : $t('toolbox.enableRegex') }}
+            {{ useRegex ? $t("toolbox.regexEnabled") : $t("toolbox.enableRegex") }}
           </n-tooltip>
         </n-flex>
-        <n-text
-          v-if="filterText && !regexError"
-          depth="3"
-          style="font-size: 12px"
-        >
-          {{ $t('toolbox.matchCount', { matched: filteredMessages.length, total: messages.length }) }}
+        <n-text v-if="filterText && !regexError" depth="3" style="font-size: 12px">
+          {{
+            $t("toolbox.matchCount", { matched: filteredMessages.length, total: messages.length })
+          }}
         </n-text>
         <n-text v-if="regexError" type="error" style="font-size: 12px">
           {{ regexError }}

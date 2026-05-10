@@ -23,7 +23,8 @@ const plugins = ref<PluginInfo[]>([
     name: "ChromeCookieUnlock",
     desc: t("plugins.cookieUnlockDesc"),
     checkFile: "yt_dlp_plugins/postprocessor/chrome_cookie_unlock.py",
-    downloadUrl: "https://github.com/seproDev/yt-dlp-ChromeCookieUnlock/releases/download/v2024.04.29/yt-dlp-ChromeCookieUnlock.zip",
+    downloadUrl:
+      "https://github.com/seproDev/yt-dlp-ChromeCookieUnlock/releases/download/v2024.04.29/yt-dlp-ChromeCookieUnlock.zip",
     installed: false,
     installing: false,
     uninstalling: false,
@@ -79,35 +80,19 @@ onMounted(() => {
 <template>
   <n-flex vertical :size="12">
     <n-text depth="3" style="font-size: 13px">
-      {{ $t('plugins.pageDesc') }}
+      {{ $t("plugins.pageDesc") }}
     </n-text>
 
-    <n-card
-      v-for="plugin in plugins"
-      :key="plugin.id"
-      size="small"
-    >
+    <n-card v-for="plugin in plugins" :key="plugin.id" size="small">
       <n-flex align="center" :size="12" :wrap="false">
         <n-flex vertical :size="2" style="flex: 1; min-width: 0">
           <n-flex align="center" :size="8">
             <n-text strong>{{ plugin.name }}</n-text>
-            <n-tag
-              v-if="plugin.installed"
-              size="small"
-              round
-              :bordered="false"
-              type="success"
-            >
-              {{ $t('settings.installed') }}
+            <n-tag v-if="plugin.installed" size="small" round :bordered="false" type="success">
+              {{ $t("settings.installed") }}
             </n-tag>
-            <n-tag
-              v-else
-              size="small"
-              round
-              :bordered="false"
-              type="warning"
-            >
-              {{ $t('settings.notInstalled') }}
+            <n-tag v-else size="small" round :bordered="false" type="warning">
+              {{ $t("settings.notInstalled") }}
             </n-tag>
           </n-flex>
           <n-text depth="3" style="font-size: 12px">
@@ -124,7 +109,7 @@ onMounted(() => {
           <template #icon>
             <n-icon><icon-mdi-download-outline /></n-icon>
           </template>
-          {{ $t('plugins.install') }}
+          {{ $t("plugins.install") }}
         </n-button>
         <n-button
           v-else
@@ -137,7 +122,7 @@ onMounted(() => {
           <template #icon>
             <n-icon><icon-mdi-delete-outline /></n-icon>
           </template>
-          {{ $t('plugins.uninstall') }}
+          {{ $t("plugins.uninstall") }}
         </n-button>
       </n-flex>
     </n-card>

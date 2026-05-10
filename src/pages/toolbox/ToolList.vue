@@ -86,7 +86,7 @@ const navigateTo = (key: string) => {
           <n-text depth="3" class="tool-desc">{{ $t(tool.descKey) }}</n-text>
         </n-flex>
         <n-button type="primary" secondary size="small" @click.stop="navigateTo(tool.key)">
-          {{ $t('toolbox.use') }}
+          {{ $t("toolbox.use") }}
           <template #icon>
             <n-icon><icon-mdi-chevron-right /></n-icon>
           </template>

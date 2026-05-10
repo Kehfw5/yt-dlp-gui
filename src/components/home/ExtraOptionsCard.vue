@@ -78,9 +78,7 @@ const handleTemplateSelect = (val: string) => {
 const templateBase = computed({
   get: () => {
     const cur = settingStore.outputTemplate;
-    return cur.endsWith(EXT_SUFFIX)
-      ? cur.slice(0, -EXT_SUFFIX.length)
-      : cur;
+    return cur.endsWith(EXT_SUFFIX) ? cur.slice(0, -EXT_SUFFIX.length) : cur;
   },
   set: (val: string) => {
     settingStore.outputTemplate = val + EXT_SUFFIX;
@@ -143,7 +141,7 @@ watch(endTime, (val) => {
   <n-card :title="$t('detail.extraOptions')" size="small">
     <n-flex vertical :size="14">
       <n-flex align="center" :size="8">
-        <span class="option-label">{{ $t('detail.filename') }}</span>
+        <span class="option-label">{{ $t("detail.filename") }}</span>
         <n-flex vertical :size="6" style="flex: 1; min-width: 0">
           <n-select
             :value="selectedPreset"
@@ -187,7 +185,7 @@ watch(endTime, (val) => {
       </n-flex>
 
       <n-flex align="center" :size="8">
-        <span class="option-label">{{ $t('detail.timeTrim') }}</span>
+        <span class="option-label">{{ $t("detail.timeTrim") }}</span>
         <n-flex align="center" :size="8">
           <n-time-picker
             v-model:value="startTime"
@@ -213,7 +211,7 @@ watch(endTime, (val) => {
 
       <n-flex :size="16" wrap>
         <n-flex align="center" :size="8">
-          <span class="option-label">{{ $t('detail.recodeFormat') }}</span>
+          <span class="option-label">{{ $t("detail.recodeFormat") }}</span>
           <n-select
             v-model:value="recodeFormat"
             :options="recodeOptions"
@@ -222,7 +220,7 @@ watch(endTime, (val) => {
           />
         </n-flex>
         <n-flex align="center" :size="8">
-          <span class="option-label">{{ $t('detail.speedLimit') }}</span>
+          <span class="option-label">{{ $t("detail.speedLimit") }}</span>
           <n-select
             v-model:value="limitRate"
             :options="limitRateOptions"
@@ -233,7 +231,7 @@ watch(endTime, (val) => {
       </n-flex>
 
       <n-flex align="center" :size="8">
-        <span class="option-label">{{ $t('detail.ffmpegArgs') }}</span>
+        <span class="option-label">{{ $t("detail.ffmpegArgs") }}</span>
         <n-input
           v-model:value="ffmpegArgs"
           :placeholder="$t('detail.ffmpegArgsPlaceholder')"
@@ -245,7 +243,7 @@ watch(endTime, (val) => {
 
       <n-flex align="center" :size="8">
         <n-checkbox v-model:checked="extractAudio" size="small">
-          {{ $t('detail.extractAudio') }}
+          {{ $t("detail.extractAudio") }}
         </n-checkbox>
         <n-select
           v-model:value="audioConvertFormat"
@@ -261,22 +259,22 @@ watch(endTime, (val) => {
 
       <n-flex :size="[16, 8]" wrap>
         <n-checkbox v-model:checked="embedSubs" size="small">
-          {{ $t('detail.embedSubs') }}
+          {{ $t("detail.embedSubs") }}
         </n-checkbox>
         <n-checkbox v-model:checked="embedThumbnail" size="small">
-          {{ $t('detail.embedThumbnail') }}
+          {{ $t("detail.embedThumbnail") }}
         </n-checkbox>
         <n-checkbox v-model:checked="embedMetadata" size="small">
-          {{ $t('detail.embedMetadata') }}
+          {{ $t("detail.embedMetadata") }}
         </n-checkbox>
         <n-checkbox v-model:checked="embedChapters" size="small">
-          {{ $t('detail.embedChapters') }}
+          {{ $t("detail.embedChapters") }}
         </n-checkbox>
         <n-checkbox v-model:checked="sponsorblockRemove" size="small">
-          {{ $t('detail.skipSponsor') }}
+          {{ $t("detail.skipSponsor") }}
         </n-checkbox>
         <n-checkbox v-model:checked="noMerge" size="small">
-          {{ $t('detail.noMerge') }}
+          {{ $t("detail.noMerge") }}
         </n-checkbox>
       </n-flex>
     </n-flex>

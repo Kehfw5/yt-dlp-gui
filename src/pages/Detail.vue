@@ -41,14 +41,10 @@ const formatTime = (secs: number): string => {
 const downloadMode = ref<"default" | "video" | "audio">("default");
 
 const selectedVideoFormat = ref(
-  videoStore.videoFormats.length > 0
-    ? videoStore.videoFormats[0].format_id
-    : "",
+  videoStore.videoFormats.length > 0 ? videoStore.videoFormats[0].format_id : "",
 );
 const selectedAudioFormat = ref(
-  videoStore.audioFormats.length > 0
-    ? videoStore.audioFormats[0].format_id
-    : "",
+  videoStore.audioFormats.length > 0 ? videoStore.audioFormats[0].format_id : "",
 );
 
 const startTime = ref<number | null>(null);
@@ -71,15 +67,11 @@ const dirCardRef = ref<HTMLElement | null>(null);
 const estimatedSize = computed(() => {
   let total = 0;
   if (downloadMode.value !== "audio") {
-    const vf = videoStore.videoFormats.find(
-      (f) => f.format_id === selectedVideoFormat.value,
-    );
+    const vf = videoStore.videoFormats.find((f) => f.format_id === selectedVideoFormat.value);
     if (vf) total += vf.filesize || vf.filesize_approx || 0;
   }
   if (downloadMode.value !== "video") {
-    const af = videoStore.audioFormats.find(
-      (f) => f.format_id === selectedAudioFormat.value,
-    );
+    const af = videoStore.audioFormats.find((f) => f.format_id === selectedAudioFormat.value);
     if (af) total += af.filesize || af.filesize_approx || 0;
   }
   return total;
@@ -100,10 +92,10 @@ const handleRefresh = async () => {
   if (!videoStore.url) return;
   const success = await videoStore.fetchVideoInfo(videoStore.url);
   if (success) {
-    selectedVideoFormat.value = videoStore.videoFormats.length > 0
-      ? videoStore.videoFormats[0].format_id : "";
-    selectedAudioFormat.value = videoStore.audioFormats.length > 0
-      ? videoStore.audioFormats[0].format_id : "";
+    selectedVideoFormat.value =
+      videoStore.videoFormats.length > 0 ? videoStore.videoFormats[0].format_id : "";
+    selectedAudioFormat.value =
+      videoStore.audioFormats.length > 0 ? videoStore.audioFormats[0].format_id : "";
     window.$message.success(t("detail.refreshSuccess"));
   }
 };
@@ -123,14 +115,10 @@ const handleDownload = async () => {
     const parts: string[] = [];
     if (downloadMode.value === "audio") {
       parts.push(t("detail.audioOnly"));
-      const af = videoStore.audioFormats.find(
-        (f) => f.format_id === selectedAudioFormat.value,
-      );
+      const af = videoStore.audioFormats.find((f) => f.format_id === selectedAudioFormat.value);
       if (af) parts.push(af.format_note || af.ext);
     } else {
-      const vf = videoStore.videoFormats.find(
-        (f) => f.format_id === selectedVideoFormat.value,
-      );
+      const vf = videoStore.videoFormats.find((f) => f.format_id === selectedVideoFormat.value);
       if (vf) {
         if (vf.height) parts.push(`${vf.height}p`);
         if (vf.fps) parts.push(`${vf.fps}fps`);
@@ -172,9 +160,10 @@ const handleDownload = async () => {
     startTime: startTime.value != null ? timeToSeconds(startTime.value) : null,
     endTime: endTime.value != null ? timeToSeconds(endTime.value) : null,
     noPlaylist: videoStore.isPlaylist && videoStore.selectedPlaylistItems.length === 1,
-    playlistItems: videoStore.isPlaylist && videoStore.selectedPlaylistItems.length > 0
-      ? videoStore.selectedPlaylistItems.sort((a, b) => a - b).join(",")
-      : null,
+    playlistItems:
+      videoStore.isPlaylist && videoStore.selectedPlaylistItems.length > 0
+        ? videoStore.selectedPlaylistItems.sort((a, b) => a - b).join(",")
+        : null,
   };
 
   const shouldQueue = !downloadStore.canStartNow();
@@ -224,7 +213,7 @@ const handleDownload = async () => {
             <icon-mdi-arrow-left />
           </n-icon>
         </template>
-        {{ $t('common.back') }}
+        {{ $t("common.back") }}
       </n-button>
       <n-input
         :value="videoStore.url"
@@ -257,11 +246,15 @@ const handleDownload = async () => {
       class="section-card"
     />
 
-    <n-card v-if="videoStore.isPlaylist && videoStore.playlistEntries.length > 0" size="small" class="section-card">
+    <n-card
+      v-if="videoStore.isPlaylist && videoStore.playlistEntries.length > 0"
+      size="small"
+      class="section-card"
+    >
       <template #header>
         <n-flex align="center" :size="8">
           <n-icon size="16"><icon-mdi-playlist-play /></n-icon>
-          <span>{{ $t('detail.playlist') }}</span>
+          <span>{{ $t("detail.playlist") }}</span>
           <n-tag size="small" round :bordered="false" type="info">
             {{ videoStore.selectedPlaylistItems.length }} / {{ videoStore.playlistEntries.length }}
           </n-tag>
@@ -269,11 +262,17 @@ const handleDownload = async () => {
       </template>
       <template #header-extra>
         <n-flex :size="8">
-          <n-button size="tiny" secondary @click="videoStore.selectedPlaylistItems = videoStore.playlistEntries.map((_, i) => i + 1)">
-            {{ $t('common.selectAll') }}
+          <n-button
+            size="tiny"
+            secondary
+            @click="
+              videoStore.selectedPlaylistItems = videoStore.playlistEntries.map((_, i) => i + 1)
+            "
+          >
+            {{ $t("common.selectAll") }}
           </n-button>
           <n-button size="tiny" secondary @click="videoStore.selectedPlaylistItems = []">
-            {{ $t('common.deselectAll') }}
+            {{ $t("common.deselectAll") }}
           </n-button>
         </n-flex>
       </template>
@@ -327,10 +326,7 @@ const handleDownload = async () => {
 
     <div style="height: 64px" />
 
-    <DownloadBar
-      :estimated-size-text="estimatedSizeText"
-      @download="handleDownload"
-    />
+    <DownloadBar :estimated-size-text="estimatedSizeText" @download="handleDownload" />
   </div>
 </template>
 

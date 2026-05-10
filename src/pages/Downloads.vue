@@ -17,10 +17,7 @@ const activeTasks = computed(() =>
 
 const finishedTasks = computed(() =>
   downloadStore.tasks.filter(
-    (t) =>
-      t.status === "completed" ||
-      t.status === "error" ||
-      t.status === "cancelled",
+    (t) => t.status === "completed" || t.status === "error" || t.status === "cancelled",
   ),
 );
 
@@ -127,9 +124,7 @@ const statusLabel = (task: DownloadTask) => {
   }
 };
 
-const statusType = (
-  task: DownloadTask,
-): "default" | "success" | "error" | "warning" | "info" => {
+const statusType = (task: DownloadTask): "default" | "success" | "error" | "warning" | "info" => {
   switch (task.status) {
     case "completed":
       return "success";
@@ -147,8 +142,7 @@ const statusType = (
 
 const sizeProgress = (task: DownloadTask) => {
   if (!task.downloaded && !task.total) return "";
-  if (task.downloaded && task.total)
-    return `${task.downloaded} / ${task.total}`;
+  if (task.downloaded && task.total) return `${task.downloaded} / ${task.total}`;
   if (task.total) return task.total;
   return "";
 };
@@ -188,9 +182,7 @@ const handleOpenSource = async (url: string) => {
   try {
     await openUrl(url);
   } catch (e: unknown) {
-    window.$message.error(
-      e instanceof Error ? e.message : String(e),
-    );
+    window.$message.error(e instanceof Error ? e.message : String(e));
   }
 };
 
@@ -198,9 +190,7 @@ const handlePause = async (id: string) => {
   try {
     await downloadStore.pauseTask(id);
   } catch (e: unknown) {
-    window.$message.error(
-      e instanceof Error ? e.message : String(e) || t("downloads.pauseFailed"),
-    );
+    window.$message.error(e instanceof Error ? e.message : String(e) || t("downloads.pauseFailed"));
   }
 };
 
@@ -236,9 +226,7 @@ const handleRetry = async (id: string) => {
   try {
     await downloadStore.retryTask(id);
   } catch (e: unknown) {
-    window.$message.error(
-      e instanceof Error ? e.message : String(e) || t("downloads.retryFailed"),
-    );
+    window.$message.error(e instanceof Error ? e.message : String(e) || t("downloads.retryFailed"));
   }
 };
 
@@ -298,14 +286,8 @@ const handleClearFinished = () => {
     <div class="section">
       <n-flex align="center" :size="8" style="margin-bottom: 12px">
         <n-icon size="16"><icon-mdi-download /></n-icon>
-        <n-text strong>{{ $t('downloads.downloading') }}</n-text>
-        <n-tag
-          v-if="activeTasks.length > 0"
-          size="small"
-          round
-          :bordered="false"
-          type="info"
-        >
+        <n-text strong>{{ $t("downloads.downloading") }}</n-text>
+        <n-tag v-if="activeTasks.length > 0" size="small" round :bordered="false" type="info">
           {{ activeTasks.length }}
         </n-tag>
       </n-flex>
@@ -314,19 +296,10 @@ const handleClearFinished = () => {
         <n-empty :description="$t('downloads.noActiveTasks')" size="small" />
       </div>
       <template v-else>
-        <div
-          v-for="group in activeGroups"
-          :key="'a-' + group.label"
-          class="date-group"
-        >
+        <div v-for="group in activeGroups" :key="'a-' + group.label" class="date-group">
           <n-text depth="3" class="date-label">{{ group.label }}</n-text>
           <n-flex vertical :size="10">
-            <n-card
-              v-for="task in group.tasks"
-              :key="task.id"
-              size="small"
-              class="task-card"
-            >
+            <n-card v-for="task in group.tasks" :key="task.id" size="small" class="task-card">
               <n-flex :size="14">
                 <div class="task-thumbnail">
                   <img
@@ -343,11 +316,7 @@ const handleClearFinished = () => {
                     <n-tag size="small" :bordered="false" round type="info">
                       {{ task.formatLabel }}
                     </n-tag>
-                    <n-ellipsis
-                      :line-clamp="1"
-                      :tooltip="false"
-                      class="task-title"
-                    >
+                    <n-ellipsis :line-clamp="1" :tooltip="false" class="task-title">
                       {{ task.title }}
                     </n-ellipsis>
                   </n-flex>
@@ -360,58 +329,34 @@ const handleClearFinished = () => {
                   />
                   <n-flex align="center" justify="space-between">
                     <n-flex align="center">
-                      <n-tag
-                        size="small"
-                        :bordered="false"
-                        round
-                        :type="statusType(task)"
-                      >
+                      <n-tag size="small" :bordered="false" round :type="statusType(task)">
                         {{ statusLabel(task) }}
                       </n-tag>
                       <n-text v-if="sizeProgress(task)" depth="3">
                         {{ sizeProgress(task) }}
                       </n-text>
                       <n-text depth="3">{{ task.percent.toFixed(1) }}%</n-text>
-                      <n-text
-                        v-if="task.eta && task.status === 'downloading'"
-                        depth="3"
-                      >
+                      <n-text v-if="task.eta && task.status === 'downloading'" depth="3">
                         ETA {{ task.eta }}
                       </n-text>
                     </n-flex>
                     <n-flex align="center" size="small">
-                      <n-button
-                        size="tiny"
-                        strong
-                        secondary
-                        @click="handleOpenSource(task.url)"
-                      >
+                      <n-button size="tiny" strong secondary @click="handleOpenSource(task.url)">
                         <template #icon>
                           <n-icon size="16"><icon-mdi-open-in-new /></n-icon>
                         </template>
                       </n-button>
-                      <n-button
-                        size="tiny"
-                        strong
-                        secondary
-                        @click="toggleLog(task.id)"
-                      >
+                      <n-button size="tiny" strong secondary @click="toggleLog(task.id)">
                         <template #icon>
                           <n-icon size="16">
-                            <icon-mdi-chevron-up
-                              v-if="expandedLogs.has(task.id)"
-                            /><icon-mdi-text-long v-else />
+                            <icon-mdi-chevron-up v-if="expandedLogs.has(task.id)" />
+                            <icon-mdi-text-long v-else />
                           </n-icon>
                         </template>
                       </n-button>
                       <n-divider vertical style="margin: 0 2px" />
                       <template v-if="task.status === 'downloading'">
-                        <n-button
-                          size="tiny"
-                          strong
-                          secondary
-                          @click="handlePause(task.id)"
-                        >
+                        <n-button size="tiny" strong secondary @click="handlePause(task.id)">
                           <template #icon>
                             <n-icon size="16"><icon-mdi-pause /></n-icon>
                           </template>
@@ -424,9 +369,7 @@ const handleClearFinished = () => {
                           @click="handleCancel(task.id)"
                         >
                           <template #icon>
-                            <n-icon size="16"
-                              ><icon-mdi-close-circle-outline
-                            /></n-icon>
+                            <n-icon size="16"><icon-mdi-close-circle-outline /></n-icon>
                           </template>
                         </n-button>
                       </template>
@@ -439,9 +382,7 @@ const handleClearFinished = () => {
                           @click="handleCancel(task.id)"
                         >
                           <template #icon>
-                            <n-icon size="16"
-                              ><icon-mdi-close-circle-outline
-                            /></n-icon>
+                            <n-icon size="16"><icon-mdi-close-circle-outline /></n-icon>
                           </template>
                         </n-button>
                       </template>
@@ -465,9 +406,7 @@ const handleClearFinished = () => {
                           @click="handleCancel(task.id)"
                         >
                           <template #icon>
-                            <n-icon size="16"
-                              ><icon-mdi-close-circle-outline
-                            /></n-icon>
+                            <n-icon size="16"><icon-mdi-close-circle-outline /></n-icon>
                           </template>
                         </n-button>
                       </template>
@@ -495,14 +434,8 @@ const handleClearFinished = () => {
     <div class="section">
       <n-flex align="center" :size="8" style="margin-bottom: 12px">
         <n-icon size="16"><icon-mdi-check-circle-outline /></n-icon>
-        <n-text strong>{{ $t('downloads.completed') }}</n-text>
-        <n-tag
-          v-if="finishedTasks.length > 0"
-          size="small"
-          round
-          :bordered="false"
-          type="success"
-        >
+        <n-text strong>{{ $t("downloads.completed") }}</n-text>
+        <n-tag v-if="finishedTasks.length > 0" size="small" round :bordered="false" type="success">
           {{ finishedTasks.length }}
         </n-tag>
         <n-button
@@ -517,7 +450,7 @@ const handleClearFinished = () => {
           <template #icon>
             <n-icon size="14"><icon-mdi-delete-sweep-outline /></n-icon>
           </template>
-          {{ $t('common.clear') }}
+          {{ $t("common.clear") }}
         </n-button>
       </n-flex>
 
@@ -525,19 +458,10 @@ const handleClearFinished = () => {
         <n-empty :description="$t('downloads.noFinishedTasks')" size="small" />
       </div>
       <template v-else>
-        <div
-          v-for="group in finishedGroups"
-          :key="'f-' + group.label"
-          class="date-group"
-        >
+        <div v-for="group in finishedGroups" :key="'f-' + group.label" class="date-group">
           <n-text depth="3" class="date-label">{{ group.label }}</n-text>
           <n-flex vertical :size="10">
-            <n-card
-              v-for="task in group.tasks"
-              :key="task.id"
-              size="small"
-              class="task-card"
-            >
+            <n-card v-for="task in group.tasks" :key="task.id" size="small" class="task-card">
               <n-flex :size="14">
                 <div class="task-thumbnail">
                   <img
@@ -554,11 +478,7 @@ const handleClearFinished = () => {
                     <n-tag size="small" :bordered="false" round type="info">
                       {{ task.formatLabel }}
                     </n-tag>
-                    <n-ellipsis
-                      :line-clamp="1"
-                      :tooltip="false"
-                      class="task-title"
-                    >
+                    <n-ellipsis :line-clamp="1" :tooltip="false" class="task-title">
                       {{ task.title }}
                     </n-ellipsis>
                   </n-flex>
@@ -570,45 +490,27 @@ const handleClearFinished = () => {
                   />
                   <n-flex align="center" justify="space-between">
                     <n-flex align="center">
-                      <n-tag
-                        size="small"
-                        :bordered="false"
-                        round
-                        :type="statusType(task)"
-                      >
+                      <n-tag size="small" :bordered="false" round :type="statusType(task)">
                         {{ statusLabel(task) }}
                       </n-tag>
                       <template v-if="task.status !== 'completed'">
                         <n-text v-if="sizeProgress(task)" depth="3">
                           {{ sizeProgress(task) }}
                         </n-text>
-                        <n-text depth="3"
-                          >{{ task.percent.toFixed(1) }}%</n-text
-                        >
+                        <n-text depth="3">{{ task.percent.toFixed(1) }}%</n-text>
                       </template>
                     </n-flex>
                     <n-flex align="center" size="small">
-                      <n-button
-                        size="tiny"
-                        strong
-                        secondary
-                        @click="handleOpenSource(task.url)"
-                      >
+                      <n-button size="tiny" strong secondary @click="handleOpenSource(task.url)">
                         <template #icon>
                           <n-icon size="16"><icon-mdi-open-in-new /></n-icon>
                         </template>
                       </n-button>
-                      <n-button
-                        size="tiny"
-                        strong
-                        secondary
-                        @click="toggleLog(task.id)"
-                      >
+                      <n-button size="tiny" strong secondary @click="toggleLog(task.id)">
                         <template #icon>
                           <n-icon size="16">
-                            <icon-mdi-chevron-up
-                              v-if="expandedLogs.has(task.id)"
-                            /><icon-mdi-text-long v-else />
+                            <icon-mdi-chevron-up v-if="expandedLogs.has(task.id)" />
+                            <icon-mdi-text-long v-else />
                           </n-icon>
                         </template>
                       </n-button>
@@ -622,15 +524,11 @@ const handleClearFinished = () => {
                         @click="handleOpenFolder(task)"
                       >
                         <template #icon>
-                          <n-icon size="16"
-                            ><icon-mdi-folder-open-outline
-                          /></n-icon>
+                          <n-icon size="16"><icon-mdi-folder-open-outline /></n-icon>
                         </template>
                       </n-button>
                       <n-button
-                        v-if="
-                          task.status === 'error' || task.status === 'cancelled'
-                        "
+                        v-if="task.status === 'error' || task.status === 'cancelled'"
                         size="tiny"
                         strong
                         secondary

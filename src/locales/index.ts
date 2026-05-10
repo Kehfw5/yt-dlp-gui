@@ -25,8 +25,19 @@ export interface LocaleEntry {
 
 export const localeEntries: LocaleEntry[] = [
   { code: "en-US", flag: "🇺🇸", label: "English", match: (lang) => lang.startsWith("en") },
-  { code: "ar-EG", flag: "🇪🇬", label: "العربية", match: (lang) => lang.startsWith("ar"), rtl: true },
-  { code: "zh-CN", flag: "🇨🇳", label: "简体中文", match: (lang) => lang === "zh-CN" || lang === "zh-SG" || lang === "zh" },
+  {
+    code: "ar-EG",
+    flag: "🇪🇬",
+    label: "العربية",
+    match: (lang) => lang.startsWith("ar"),
+    rtl: true,
+  },
+  {
+    code: "zh-CN",
+    flag: "🇨🇳",
+    label: "简体中文",
+    match: (lang) => lang === "zh-CN" || lang === "zh-SG" || lang === "zh",
+  },
   { code: "zh-TW", flag: "🇭🇰", label: "繁體中文", match: (lang) => lang.startsWith("zh") },
   { code: "ja-JP", flag: "🇯🇵", label: "日本語", match: (lang) => lang.startsWith("ja") },
   { code: "ko-KR", flag: "🇰🇷", label: "한국어", match: (lang) => lang.startsWith("ko") },
@@ -88,8 +99,7 @@ const i18n = createI18n({
 });
 
 /** 根据 locale code 返回文档书写方向 */
-const getDirection = (code: string): "rtl" | "ltr" =>
-  localeMap.get(code)?.rtl ? "rtl" : "ltr";
+const getDirection = (code: string): "rtl" | "ltr" => (localeMap.get(code)?.rtl ? "rtl" : "ltr");
 
 /** 切换语言（供 settings store 调用） */
 export const setI18nLocale = (locale: string) => {

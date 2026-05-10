@@ -107,13 +107,16 @@ onMounted(() => {
 });
 
 // 监听 query 变化（已在首页时收到新深链接）
-watch(() => route.query.url, (newUrl) => {
-  if (newUrl && typeof newUrl === "string") {
-    url.value = newUrl;
-    router.replace({ name: "home", query: {} });
-    handleSearch();
-  }
-});
+watch(
+  () => route.query.url,
+  (newUrl) => {
+    if (newUrl && typeof newUrl === "string") {
+      url.value = newUrl;
+      router.replace({ name: "home", query: {} });
+      handleSearch();
+    }
+  },
+);
 
 onUnmounted(() => {
   if (tipTimer) clearInterval(tipTimer);
@@ -144,7 +147,7 @@ const handleSearch = async () => {
           <span class="hero-text">GUI</span>
         </n-flex>
         <n-text depth="3" style="font-size: 16px">
-          {{ $t('home.slogan') }}
+          {{ $t("home.slogan") }}
         </n-text>
       </n-flex>
       <n-flex :size="8" :wrap="false" class="search-bar">
@@ -173,7 +176,7 @@ const handleSearch = async () => {
               <icon-mdi-magnify />
             </n-icon>
           </template>
-          {{ $t('home.parse') }}
+          {{ $t("home.parse") }}
         </n-button>
       </n-flex>
       <n-flex :size="8" justify="center">
@@ -181,7 +184,7 @@ const handleSearch = async () => {
           <template #icon>
             <n-icon size="14"><icon-mdi-content-paste /></n-icon>
           </template>
-          {{ $t('home.pasteFromClipboard') }}
+          {{ $t("home.pasteFromClipboard") }}
         </n-button>
         <n-button
           size="small"
@@ -194,7 +197,7 @@ const handleSearch = async () => {
           <template #icon>
             <n-icon size="14"><icon-mdi-history /></n-icon>
           </template>
-          {{ $t('home.parseHistory') }}
+          {{ $t("home.parseHistory") }}
         </n-button>
       </n-flex>
       <div class="tips-container">
@@ -210,7 +213,7 @@ const handleSearch = async () => {
       <n-drawer-content :native-scrollbar="false">
         <template #header>
           <n-flex align="center" justify="space-between" style="width: 100%">
-            <span>{{ $t('home.parseHistory') }}</span>
+            <span>{{ $t("home.parseHistory") }}</span>
             <n-button
               size="tiny"
               strong
@@ -219,7 +222,7 @@ const handleSearch = async () => {
               :disabled="historyStore.items.length === 0"
               @click="historyStore.clear()"
             >
-              {{ $t('common.clear') }}
+              {{ $t("common.clear") }}
             </n-button>
           </n-flex>
         </template>

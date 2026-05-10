@@ -1,6 +1,4 @@
 <script setup lang="ts">
-
-
 defineProps<{
   estimatedSizeText: string;
 }>();
@@ -16,7 +14,7 @@ const emit = defineEmits<{
       <n-flex align="center" justify="space-between">
         <n-flex align="center" :size="4" class="size-info">
           <icon-mdi-file-outline />
-          <n-text depth="3">{{ $t('detail.estimatedSize') }}</n-text>
+          <n-text depth="3">{{ $t("detail.estimatedSize") }}</n-text>
           <n-text strong>{{ estimatedSizeText }}</n-text>
         </n-flex>
         <n-button type="primary" round @click="emit('download')">
@@ -25,7 +23,7 @@ const emit = defineEmits<{
               <icon-mdi-download />
             </n-icon>
           </template>
-          {{ $t('detail.downloadNow') }}
+          {{ $t("detail.downloadNow") }}
         </n-button>
       </n-flex>
     </n-card>
