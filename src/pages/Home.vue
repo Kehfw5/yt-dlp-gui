@@ -142,9 +142,8 @@ const handleSearch = async () => {
   <div class="home-page">
     <n-flex vertical align="center" justify="center" :size="20" class="search-view">
       <n-flex vertical align="center" :size="8">
-        <n-flex align="center" :size="8" class="hero-logo">
-          <icon-mdi-youtube class="hero-icon" />
-          <span class="hero-text">GUI</span>
+        <n-flex align="center" class="hero-logo">
+          <span class="hero-text">YDL GUI</span>
         </n-flex>
         <n-text depth="3" style="font-size: 16px">
           {{ $t("home.slogan") }}
@@ -286,10 +285,6 @@ const handleSearch = async () => {
 
   .hero-logo {
     user-select: none;
-
-    .hero-icon {
-      font-size: 48px;
-    }
 
     .hero-text {
       font-weight: 800;

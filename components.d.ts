@@ -11,6 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BrowserExtensionModal: typeof import('./src/components/BrowserExtensionModal.vue')['default']
     CookieCard: typeof import('./src/components/CookieCard.vue')['default']
     CookieModal: typeof import('./src/components/CookieModal.vue')['default']
     DownloadBar: typeof import('./src/components/home/DownloadBar.vue')['default']
@@ -47,6 +48,7 @@ declare module 'vue' {
     IconMdiPause: typeof import('~icons/mdi/pause')['default']
     IconMdiPlay: typeof import('~icons/mdi/play')['default']
     IconMdiPlaylistPlay: typeof import('~icons/mdi/playlist-play')['default']
+    IconMdiPuzzleOutline: typeof import('~icons/mdi/puzzle-outline')['default']
     IconMdiRefresh: typeof import('~icons/mdi/refresh')['default']
     IconMdiSubtitlesOutline: typeof import('~icons/mdi/subtitles-outline')['default']
     IconMdiTextLong: typeof import('~icons/mdi/text-long')['default']

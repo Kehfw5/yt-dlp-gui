@@ -146,7 +146,8 @@
     "appUpdating": "正在下載更新...",
     "appUpdateSuccess": "更新完成，即將重新啟動",
     "appUpdateFailed": "更新失敗: {e}",
-    "appIsLatest": "目前已是最新版本"
+    "appIsLatest": "目前已是最新版本",
+    "systemBinaryNotice": "目前使用的是系統安裝的 yt-dlp，「檢查更新」只會更新應用程式管理的副本，不會影響實際使用的版本。請將上方「工具路徑優先級」切換為「僅應用程式」，或透過系統套件管理器更新。"
   },
   "detail": {
     "videoLink": "影片連結",
@@ -305,7 +306,7 @@
     "tagBeta": "測試版",
     "intro": "在 Chromium 核心瀏覽器（Chrome / Edge / Brave / Vivaldi 等）安裝 YDL GUI 助手擴充功能，即可一鍵將目前頁面連結與所需 Cookie 發送到本應用程式。對需要登入或會員限定的影片特別好用。",
     "installHeading": "安裝",
-    "install1": "點擊下方「開啟原始碼資料夾」檢視儲存庫中的 browser-extension/ 目錄，並下載或複製整個儲存庫。",
+    "install1": "點擊下方「開啟擴充功能資料夾」按鈕，在檔案總管中顯示隨應用程式打包的擴充功能檔案。",
     "install2": "開啟 chrome://extensions（或 edge://extensions），在右上角啟用「開發人員模式」。",
     "install3": "點擊「載入未封裝項目」，選擇 browser-extension/ 資料夾。",
     "install4": "將 YDL GUI 助手圖示固定在網址列旁，方便隨時呼叫。",
@@ -316,8 +317,8 @@
     "privacyHeading": "隱私",
     "privacyNote": "Cookie 僅在本機處理 — 透過本機通訊協定 (ytdlp-gui://) 直接傳給本應用程式，不會上傳到任何伺服器。",
     "supportedHeading": "支援的網站",
-    "openSource": "開啟原始碼資料夾",
-    "openReleases": "應用程式發行頁"
+    "openLocalFolder": "開啟擴充功能資料夾",
+    "viewSource": "在 GitHub 查看原始碼"
   },
   "errors": {
     "unsupportedUrl": "該平台暫不支援，請檢查連結是否正確",

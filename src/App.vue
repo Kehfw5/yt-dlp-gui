@@ -4,7 +4,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { exit } from "@tauri-apps/plugin-process";
 import { check } from "@tauri-apps/plugin-updater";
-import { onOpenUrl } from "@tauri-apps/plugin-deep-link";
+import { onOpenUrl, getCurrent as getCurrentDeepLink } from "@tauri-apps/plugin-deep-link";
 import IconMdiHome from "~icons/mdi/home";
 import IconMdiDownload from "~icons/mdi/download";
 import IconMdiToolbox from "~icons/mdi/toolbox";
@@ -77,8 +77,14 @@ win.onCloseRequested(async (event) => {
 // 监听托盘退出请求
 listen("tray-quit-requested", () => handleQuitRequest());
 
-/** 处理深链接 URL（来自浏览器扩展或命令行） */
+/** 同一 URL 短时间内重复送达时去重，避免 onOpenUrl + getCurrent 同时触发 */
+let lastDeepLink = "";
+let lastDeepLinkAt = 0;
 const handleDeepLink = (deepLinkUrl: string) => {
+  const now = Date.now();
+  if (deepLinkUrl === lastDeepLink && now - lastDeepLinkAt < 1500) return;
+  lastDeepLink = deepLinkUrl;
+  lastDeepLinkAt = now;
   try {
     const url = new URL(deepLinkUrl);
     if (url.host !== "download") return;
@@ -114,19 +120,27 @@ const checkAppUpdate = async () => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   win.show();
   syncTrayMenu();
   if (settingStore.autoCheckUpdate) {
     checkAppUpdate();
   }
-  // 监听深链接（首次启动时由 tauri-plugin-deep-link 触发）
-  onOpenUrl((urls) => {
-    for (const u of urls) {
-      handleDeepLink(u);
+  // 冷启动：应用是被深链接拉起的，立刻读取触发 URL 并填充
+  // （onOpenUrl 在监听器注册前到达的事件可能丢失，必须用 getCurrent 兜底）
+  try {
+    const initial = await getCurrentDeepLink();
+    if (initial?.length) {
+      for (const u of initial) handleDeepLink(u);
     }
+  } catch {
+    // 插件不可用时静默忽略
+  }
+  // 应用运行期间收到的深链接
+  onOpenUrl((urls) => {
+    for (const u of urls) handleDeepLink(u);
   });
-  // 监听 single-instance 转发的深链接（应用已运行时）
+  // single-instance 转发的深链接（应用已运行时再次唤起）
   listen<string>("deep-link-url", (event) => {
     handleDeepLink(event.payload);
   });
@@ -142,8 +156,8 @@ onMounted(() => {
       <n-layout-header bordered class="app-header">
         <div class="header-side">
           <div class="logo" @click="router.push({ name: 'home' })">
-            <icon-mdi-youtube />
-            <span class="logo-text">GUI</span>
+            <img src="/app-icon.svg" alt="" class="logo-img" />
+            <span class="logo-text">YDL GUI</span>
           </div>
         </div>
         <div class="header-nav">
@@ -273,13 +287,14 @@ onMounted(() => {
   .logo {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     user-select: none;
     cursor: pointer;
 
-    svg {
-      font-size: 28px;
-      transition: color 0.3s;
+    .logo-img {
+      width: 26px;
+      height: 26px;
+      transition: transform 0.3s;
     }
 
     .logo-text {
@@ -288,10 +303,8 @@ onMounted(() => {
       letter-spacing: 0.5px;
     }
 
-    &:hover {
-      svg {
-        color: #ff0033;
-      }
+    &:hover .logo-img {
+      transform: scale(1.06);
     }
   }
 

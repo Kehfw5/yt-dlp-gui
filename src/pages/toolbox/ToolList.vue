@@ -4,7 +4,7 @@ import IconMdiImageOutline from "~icons/mdi/image-outline";
 import IconMdiSubtitlesOutline from "~icons/mdi/subtitles-outline";
 import IconMdiMessageTextOutline from "~icons/mdi/message-text-outline";
 import IconMdiPuzzleOutline from "~icons/mdi/puzzle-outline";
-import IconMdiExtension from "~icons/mdi/extension";
+import IconMdiOpenInApp from "~icons/mdi/open-in-app";
 import { useI18n } from "vue-i18n";
 
 useI18n();
@@ -18,6 +18,8 @@ interface ToolItem {
   titleKey: string;
   descKey: string;
   tagKey?: string;
+  /** "route" 跳转工具子页（默认）；"modal" 在当前页弹出说明 */
+  kind?: "route" | "modal";
 }
 
 const tools: ToolItem[] = [
@@ -56,57 +58,69 @@ const tools: ToolItem[] = [
   },
   {
     key: "browser-extension",
-    icon: IconMdiExtension,
-    color: "#ff0033",
-    bg: "rgba(255,0,51,0.1)",
+    icon: IconMdiOpenInApp,
+    color: "#06b6d4",
+    bg: "rgba(6,182,212,0.1)",
     titleKey: "toolbox.browserExtTitle",
     descKey: "toolbox.browserExtDesc",
     tagKey: "browserExt.tagBeta",
+    kind: "modal",
   },
 ];
 
-const navigateTo = (key: string) => {
-  router.push({ name: `toolbox-${key}` });
+const showBrowserExtModal = ref(false);
+
+const handleToolClick = (tool: ToolItem) => {
+  if (tool.kind === "modal") {
+    if (tool.key === "browser-extension") showBrowserExtModal.value = true;
+    return;
+  }
+  router.push({ name: `toolbox-${tool.key}` });
 };
 </script>
 
 <template>
-  <n-flex vertical :size="8">
+  <div class="tools-grid">
     <n-card
       v-for="tool in tools"
       :key="tool.key"
       size="small"
       hoverable
       class="tool-card"
-      @click="navigateTo(tool.key)"
+      @click="handleToolClick(tool)"
     >
-      <n-flex align="center" :size="12" :wrap="false">
+      <n-flex align="center" :size="10" :wrap="false">
         <div class="tool-icon" :style="{ background: tool.bg }">
           <n-icon :size="20" :color="tool.color">
             <component :is="tool.icon" />
           </n-icon>
         </div>
         <n-flex vertical :size="2" class="tool-info">
-          <n-flex align="center" :size="6">
-            <n-text strong>{{ $t(tool.titleKey) }}</n-text>
+          <n-flex align="center" :size="6" :wrap="false">
+            <n-text strong class="tool-title">{{ $t(tool.titleKey) }}</n-text>
             <n-tag v-if="tool.tagKey" size="small" round :bordered="false" type="warning">
               {{ $t(tool.tagKey) }}
             </n-tag>
           </n-flex>
           <n-text depth="3" class="tool-desc">{{ $t(tool.descKey) }}</n-text>
         </n-flex>
-        <n-button type="primary" secondary size="small" @click.stop="navigateTo(tool.key)">
-          {{ $t("toolbox.use") }}
-          <template #icon>
-            <n-icon><icon-mdi-chevron-right /></n-icon>
-          </template>
-        </n-button>
+        <n-icon :size="16" class="tool-arrow" :depth="3">
+          <icon-mdi-chevron-right />
+        </n-icon>
       </n-flex>
     </n-card>
-  </n-flex>
+  </div>
+
+  <BrowserExtensionModal v-model:show="showBrowserExtModal" />
 </template>
 
 <style scoped lang="scss">
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 8px;
+}
+
 .tool-card {
   cursor: pointer;
   transition: transform 0.15s;
@@ -126,11 +140,30 @@ const navigateTo = (key: string) => {
   flex: 1;
   min-width: 0;
 
+  .tool-title {
+    flex: 0 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .tool-desc {
     font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+}
+
+.tool-arrow {
+  flex-shrink: 0;
+  opacity: 0.4;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.tool-card:hover .tool-arrow {
+  opacity: 0.8;
+  transform: translateX(2px);
 }
 </style>

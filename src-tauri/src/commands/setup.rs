@@ -48,12 +48,15 @@ pub fn set_youtube_extractor_args(po_token: String, visitor_data: String) -> Res
 #[tauri::command]
 pub async fn get_ytdlp_status(app: AppHandle) -> Result<YtdlpStatus, String> {
     let ytdlp_path = utils::get_ytdlp_path(&app)?;
+    let managed_path = utils::get_managed_ytdlp_path(&app)?;
+    let is_managed = ytdlp_path == managed_path;
 
     if !ytdlp_path.exists() {
         return Ok(YtdlpStatus {
             installed: false,
             version: String::new(),
             path: ytdlp_path.to_string_lossy().to_string(),
+            is_managed,
         });
     }
 
@@ -75,6 +78,7 @@ pub async fn get_ytdlp_status(app: AppHandle) -> Result<YtdlpStatus, String> {
         installed: true,
         version,
         path: ytdlp_path.to_string_lossy().to_string(),
+        is_managed,
     })
 }
 
@@ -287,12 +291,15 @@ pub async fn install_plugin(app: AppHandle, url: String) -> Result<(), String> {
 #[tauri::command]
 pub async fn get_deno_status(app: AppHandle) -> Result<DenoStatus, String> {
     let deno_path = utils::get_deno_path(&app)?;
+    let managed_path = utils::get_managed_deno_path(&app)?;
+    let is_managed = deno_path == managed_path;
 
     if !deno_path.exists() {
         return Ok(DenoStatus {
             installed: false,
             version: String::new(),
             path: deno_path.to_string_lossy().to_string(),
+            is_managed,
         });
     }
 
@@ -317,12 +324,14 @@ pub async fn get_deno_status(app: AppHandle) -> Result<DenoStatus, String> {
                 installed: true,
                 version,
                 path: deno_path.to_string_lossy().to_string(),
+                is_managed,
             })
         }
         _ => Ok(DenoStatus {
             installed: true,
             version: String::new(),
             path: deno_path.to_string_lossy().to_string(),
+            is_managed,
         }),
     }
 }

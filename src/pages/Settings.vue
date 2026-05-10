@@ -288,6 +288,16 @@ watch(
             {{ $t("settings.ytdlpDesc") }}
           </n-text>
 
+          <n-alert
+            v-if="ytdlpStatus?.installed && ytdlpStatus.isManaged === false"
+            type="warning"
+            :bordered="false"
+            :show-icon="false"
+            style="font-size: 12px"
+          >
+            {{ $t("settings.systemBinaryNotice") }}
+          </n-alert>
+
           <div class="info-list">
             <div class="info-row">
               <span class="info-label">{{ $t("settings.version") }}</span>

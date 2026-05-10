@@ -53,8 +53,8 @@ export const useSettingStore = defineStore(
     /** 启动时自动检查更新 */
     const autoCheckUpdate = ref(true);
 
-    /** 二进制路径解析模式 */
-    const binaryPathResolveMode = ref<"system-preferred" | "app-only">("system-preferred");
+    /** 二进制路径解析模式（默认仅应用，保证「检测更新」始终对实际使用的副本生效） */
+    const binaryPathResolveMode = ref<"system-preferred" | "app-only">("app-only");
 
     /** YouTube PO Token（用于绕过 403 / 限流） */
     const youtubePoToken = ref("");

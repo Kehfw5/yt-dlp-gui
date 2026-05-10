@@ -146,7 +146,8 @@
     "appUpdating": "Baixando atualização...",
     "appUpdateSuccess": "Atualização concluída, reiniciando",
     "appUpdateFailed": "Falha na atualização: {e}",
-    "appIsLatest": "Você está na versão mais recente"
+    "appIsLatest": "Você está na versão mais recente",
+    "systemBinaryNotice": "Você está usando o yt-dlp instalado no sistema. \"Verificar atualização\" só atualiza a cópia gerenciada pelo app e não afeta o binário em uso. Alterne \"Prioridade de caminho das ferramentas\" acima para \"Apenas app\" ou atualize pelo gerenciador de pacotes do sistema."
   },
   "detail": {
     "videoLink": "URL do vídeo",
@@ -305,7 +306,7 @@
     "tagBeta": "Beta",
     "intro": "Instale a extensão YDL GUI Helper em navegadores baseados em Chromium (Chrome / Edge / Brave / Vivaldi etc.) para enviar a URL da página atual e os cookies necessários a este aplicativo com um clique — especialmente útil para vídeos que exigem login ou são restritos a membros.",
     "installHeading": "Instalação",
-    "install1": "Clique em \"Abrir pasta do código-fonte\" abaixo para ver a pasta browser-extension/ no repositório e baixe ou clone o repositório inteiro.",
+    "install1": "Clique em \"Abrir pasta da extensão\" abaixo para abrir a pasta da extensão incluída no app no gerenciador de arquivos.",
     "install2": "Abra chrome://extensions (ou edge://extensions) e ative o \"Modo do desenvolvedor\" no canto superior direito.",
     "install3": "Clique em \"Carregar sem compactação\" e selecione a pasta browser-extension/.",
     "install4": "Fixe o ícone do YDL GUI Helper ao lado da barra de endereços para acesso rápido.",
@@ -316,8 +317,8 @@
     "privacyHeading": "Privacidade",
     "privacyNote": "Os cookies são processados apenas localmente — são entregues diretamente a este aplicativo via um protocolo local (ytdlp-gui://) e não são enviados a nenhum servidor.",
     "supportedHeading": "Sites suportados",
-    "openSource": "Abrir pasta do código-fonte",
-    "openReleases": "Página de releases"
+    "openLocalFolder": "Abrir pasta da extensão",
+    "viewSource": "Ver código-fonte no GitHub"
   },
   "errors": {
     "unsupportedUrl": "Esta plataforma não é suportada. Verifique a URL",

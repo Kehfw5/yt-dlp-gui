@@ -1,12 +1,29 @@
 use tauri::menu::{Menu, MenuItem};
+use tauri::path::BaseDirectory;
 use tauri::tray::TrayIconEvent;
 use tauri::Emitter;
 use tauri::Manager;
+use tauri_plugin_opener::OpenerExt;
 
 mod commands;
 mod parser;
 mod process;
 mod utils;
+
+/// Reveal the bundled browser-extension folder in the OS file manager
+/// and return the absolute path.
+#[tauri::command]
+fn reveal_browser_extension(app: tauri::AppHandle) -> Result<String, String> {
+    let path = app
+        .path()
+        .resolve("browser-extension", BaseDirectory::Resource)
+        .map_err(|e| e.to_string())?;
+    let path_str = path.to_string_lossy().into_owned();
+    app.opener()
+        .open_path(path_str.clone(), None::<&str>)
+        .map_err(|e| e.to_string())?;
+    Ok(path_str)
+}
 
 #[tauri::command]
 fn update_tray_menu(
@@ -93,6 +110,7 @@ pub fn run() {
         .manage(commands::DownloadState::default())
         .invoke_handler(tauri::generate_handler![
             update_tray_menu,
+            reveal_browser_extension,
             commands::get_platform,
             commands::set_binary_path_resolve_mode,
             commands::set_youtube_extractor_args,

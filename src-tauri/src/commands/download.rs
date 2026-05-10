@@ -471,17 +471,19 @@ fn spawn_completion_handler(
             .and_then(|map| map.get(&task_id).map(|info| info.cancelled))
             .unwrap_or(false);
 
-        // 获取最终输出文件路径
-        let (output_file, has_output) = resolve_output_file(&processes, &task_id);
-
+        // 仅以 yt-dlp 退出码判定成功；不能用「日志里见过 Destination 行」做兜底，
+        // 因为 yt-dlp 在开始写字节前就会先打印目标路径，下载半路超时也会留下这一行。
         let success = matches!(&status, Ok(s) if s.success());
 
-        if success || has_output {
+        if success {
+            let (output_file, _) = resolve_output_file(&processes, &task_id);
             let _ = app.emit(
                 "download-complete",
                 serde_json::json!({ "id": task_id, "outputFile": output_file }),
             );
         } else if !was_cancelled {
+            // 失败时仍清理 --print-to-file 临时文件，避免遗留
+            let _ = resolve_output_file(&processes, &task_id);
             let error_msg = status
                 .as_ref()
                 .map(|s| format!("err_exit_code:{}", s.code().unwrap_or(-1)))

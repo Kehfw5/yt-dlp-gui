@@ -146,7 +146,8 @@
     "appUpdating": "アップデートをダウンロード中...",
     "appUpdateSuccess": "更新完了、再起動します",
     "appUpdateFailed": "更新に失敗しました: {e}",
-    "appIsLatest": "最新バージョンです"
+    "appIsLatest": "最新バージョンです",
+    "systemBinaryNotice": "現在システムにインストールされた yt-dlp を使用中です。「更新の確認」はアプリ管理のコピーだけを更新するため、実際に使用中のバイナリには反映されません。上の「ツールパスの優先度」を「アプリのみ」に切り替えるか、システムのパッケージマネージャーで更新してください。"
   },
   "detail": {
     "videoLink": "動画リンク",
@@ -305,7 +306,7 @@
     "tagBeta": "ベータ",
     "intro": "Chromium 系ブラウザ（Chrome / Edge / Brave / Vivaldi など）に YDL GUI Helper 拡張機能をインストールすると、現在のページの URL と必要な Cookie をワンクリックで本アプリに送信できます。ログインが必要な動画やメンバー限定動画に特に便利です。",
     "installHeading": "インストール",
-    "install1": "下の「ソースフォルダを開く」をクリックしてリポジトリ内の browser-extension/ フォルダを確認し、リポジトリ全体をダウンロードまたはクローンします。",
+    "install1": "下の「拡張機能フォルダを開く」ボタンをクリックして、アプリに同梱された拡張機能フォルダをファイルマネージャーで表示します。",
     "install2": "chrome://extensions（または edge://extensions）を開き、右上の「デベロッパーモード」をオンにします。",
     "install3": "「パッケージ化されていない拡張機能を読み込む」をクリックし、browser-extension/ フォルダを選択します。",
     "install4": "YDL GUI Helper アイコンをアドレスバー横にピン留めしておくと便利です。",
@@ -316,8 +317,8 @@
     "privacyHeading": "プライバシー",
     "privacyNote": "Cookie はローカルでのみ処理されます — ローカルプロトコル (ytdlp-gui://) を介して本アプリに直接渡され、外部サーバーには一切送信されません。",
     "supportedHeading": "対応サイト",
-    "openSource": "ソースフォルダを開く",
-    "openReleases": "リリースページ"
+    "openLocalFolder": "拡張機能フォルダを開く",
+    "viewSource": "GitHub でソースを見る"
   },
   "errors": {
     "unsupportedUrl": "このサイトは現在サポートされていません。URLをご確認ください",

@@ -146,7 +146,8 @@
     "appUpdating": "업데이트 다운로드 중...",
     "appUpdateSuccess": "업데이트 완료, 다시 시작합니다",
     "appUpdateFailed": "업데이트 실패: {e}",
-    "appIsLatest": "최신 버전입니다"
+    "appIsLatest": "최신 버전입니다",
+    "systemBinaryNotice": "현재 시스템에 설치된 yt-dlp를 사용 중입니다. \"업데이트 확인\"은 앱이 관리하는 복사본만 업데이트하므로 실제로 사용 중인 바이너리에는 반영되지 않습니다. 위의 \"도구 경로 우선순위\"를 \"앱만\"으로 전환하거나 시스템 패키지 관리자로 업데이트하세요."
   },
   "detail": {
     "videoLink": "동영상 링크",
@@ -305,7 +306,7 @@
     "tagBeta": "베타",
     "intro": "Chromium 기반 브라우저(Chrome / Edge / Brave / Vivaldi 등)에 YDL GUI Helper 확장 프로그램을 설치하면 현재 페이지의 URL과 필요한 쿠키를 클릭 한 번으로 이 앱에 보낼 수 있습니다. 로그인이 필요한 영상이나 멤버 전용 영상에 특히 유용합니다.",
     "installHeading": "설치",
-    "install1": "아래의 \"소스 폴더 열기\"를 클릭해 저장소의 browser-extension/ 폴더를 확인한 뒤 저장소 전체를 다운로드하거나 복제합니다.",
+    "install1": "아래 \"확장 프로그램 폴더 열기\" 버튼을 눌러 앱에 함께 포함된 확장 프로그램 폴더를 파일 관리자에서 엽니다.",
     "install2": "chrome://extensions(또는 edge://extensions)를 열고 오른쪽 위에서 \"개발자 모드\"를 켭니다.",
     "install3": "\"압축해제된 확장 프로그램을 로드합니다\"를 클릭한 뒤 browser-extension/ 폴더를 선택합니다.",
     "install4": "YDL GUI Helper 아이콘을 주소 표시줄 옆에 고정해 두면 편리합니다.",
@@ -316,8 +317,8 @@
     "privacyHeading": "개인정보",
     "privacyNote": "쿠키는 로컬에서만 처리됩니다 — 로컬 프로토콜(ytdlp-gui://)을 통해 이 앱으로 바로 전달되며 어떤 서버에도 업로드되지 않습니다.",
     "supportedHeading": "지원 사이트",
-    "openSource": "소스 폴더 열기",
-    "openReleases": "릴리스 페이지"
+    "openLocalFolder": "확장 프로그램 폴더 열기",
+    "viewSource": "GitHub에서 소스 보기"
   },
   "errors": {
     "unsupportedUrl": "지원하지 않는 사이트입니다. URL을 확인해 주세요",

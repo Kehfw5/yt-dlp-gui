@@ -2,12 +2,15 @@ export interface YtdlpStatus {
   installed: boolean;
   version: string;
   path: string;
+  /** 当前实际使用的是应用管理副本（true）还是系统安装版本（false） */
+  isManaged: boolean;
 }
 
 export interface DenoStatus {
   installed: boolean;
   version: string;
   path: string;
+  isManaged: boolean;
 }
 
 export interface DownloadProgress {

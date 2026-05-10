@@ -146,7 +146,8 @@
     "appUpdating": "Đang tải bản cập nhật...",
     "appUpdateSuccess": "Cập nhật hoàn tất, đang khởi động lại",
     "appUpdateFailed": "Cập nhật thất bại: {e}",
-    "appIsLatest": "Bạn đang dùng phiên bản mới nhất"
+    "appIsLatest": "Bạn đang dùng phiên bản mới nhất",
+    "systemBinaryNotice": "Đang sử dụng yt-dlp cài đặt trên hệ thống. \"Kiểm tra cập nhật\" chỉ cập nhật bản do ứng dụng quản lý và không ảnh hưởng đến tệp đang dùng. Hãy chuyển \"Ưu tiên đường dẫn công cụ\" ở trên sang \"Chỉ ứng dụng\" hoặc cập nhật bằng trình quản lý gói của hệ thống."
   },
   "detail": {
     "videoLink": "URL video",
@@ -305,7 +306,7 @@
     "tagBeta": "Beta",
     "intro": "Cài đặt tiện ích YDL GUI Helper trên trình duyệt nhân Chromium (Chrome / Edge / Brave / Vivaldi…) để gửi URL trang hiện tại và cookie cần thiết tới ứng dụng này chỉ bằng một cú nhấp — đặc biệt hữu ích cho video yêu cầu đăng nhập hoặc dành cho thành viên.",
     "installHeading": "Cài đặt",
-    "install1": "Nhấp vào \"Mở thư mục mã nguồn\" bên dưới để xem thư mục browser-extension/ trong kho dự án, sau đó tải về hoặc clone toàn bộ kho.",
+    "install1": "Nhấp \"Mở thư mục tiện ích\" bên dưới để mở thư mục tiện ích đi kèm ứng dụng trong trình quản lý tệp.",
     "install2": "Mở chrome://extensions (hoặc edge://extensions) và bật \"Chế độ nhà phát triển\" ở góc trên bên phải.",
     "install3": "Nhấp \"Tải tiện ích đã giải nén\" rồi chọn thư mục browser-extension/.",
     "install4": "Ghim biểu tượng YDL GUI Helper cạnh thanh địa chỉ để truy cập nhanh.",
@@ -316,8 +317,8 @@
     "privacyHeading": "Quyền riêng tư",
     "privacyNote": "Cookie chỉ được xử lý cục bộ — được chuyển trực tiếp sang ứng dụng thông qua giao thức cục bộ (ytdlp-gui://) và không tải lên bất kỳ máy chủ nào.",
     "supportedHeading": "Trang hỗ trợ",
-    "openSource": "Mở thư mục mã nguồn",
-    "openReleases": "Trang phát hành"
+    "openLocalFolder": "Mở thư mục tiện ích",
+    "viewSource": "Xem mã nguồn trên GitHub"
   },
   "errors": {
     "unsupportedUrl": "Nền tảng này không được hỗ trợ. Vui lòng kiểm tra URL",

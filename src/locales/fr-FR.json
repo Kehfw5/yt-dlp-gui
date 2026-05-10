@@ -146,7 +146,8 @@
     "appUpdating": "Téléchargement de la mise à jour...",
     "appUpdateSuccess": "Mise à jour terminée, redémarrage en cours",
     "appUpdateFailed": "Échec de la mise à jour : {e}",
-    "appIsLatest": "Vous utilisez la dernière version"
+    "appIsLatest": "Vous utilisez la dernière version",
+    "systemBinaryNotice": "Vous utilisez actuellement le yt-dlp installé sur le système. « Vérifier les mises à jour » ne met à jour que la copie gérée par l'app, ce qui n'affecte pas le binaire utilisé. Changez « Priorité du chemin des outils » ci-dessus en « Application uniquement » ou mettez à jour via le gestionnaire de paquets du système."
   },
   "detail": {
     "videoLink": "URL de la vidéo",
@@ -305,7 +306,7 @@
     "tagBeta": "Bêta",
     "intro": "Installez l'extension YDL GUI Helper dans un navigateur basé sur Chromium (Chrome / Edge / Brave / Vivaldi, etc.) pour envoyer l'URL de la page et les cookies nécessaires à cette application en un clic — particulièrement utile pour les vidéos nécessitant une connexion ou réservées aux abonnés.",
     "installHeading": "Installation",
-    "install1": "Cliquez sur « Ouvrir le dossier source » ci-dessous pour consulter le dossier browser-extension/ dans le dépôt, puis téléchargez ou clonez le dépôt complet.",
+    "install1": "Cliquez sur « Ouvrir le dossier de l'extension » ci-dessous pour afficher le dossier de l'extension fourni avec l'application dans l'explorateur de fichiers.",
     "install2": "Ouvrez chrome://extensions (ou edge://extensions) et activez le « mode développeur » en haut à droite.",
     "install3": "Cliquez sur « Charger l'extension non empaquetée » et sélectionnez le dossier browser-extension/.",
     "install4": "Épinglez l'icône YDL GUI Helper à côté de la barre d'adresse pour un accès rapide.",
@@ -316,8 +317,8 @@
     "privacyHeading": "Vie privée",
     "privacyNote": "Les cookies sont traités uniquement en local — ils sont transmis directement à l'application via un protocole local (ytdlp-gui://) et ne sont envoyés à aucun serveur.",
     "supportedHeading": "Sites pris en charge",
-    "openSource": "Ouvrir le dossier source",
-    "openReleases": "Page des versions"
+    "openLocalFolder": "Ouvrir le dossier de l'extension",
+    "viewSource": "Voir la source sur GitHub"
   },
   "errors": {
     "unsupportedUrl": "Cette plateforme n'est pas prise en charge. Veuillez vérifier l'URL",

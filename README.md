@@ -110,9 +110,11 @@ A companion **YDL GUI Helper** browser extension lives in [`browser-extension/`]
 
 ### Install (Chrome / Edge / Brave / Vivaldi etc.)
 
-1. Download or clone this repository.
+The extension is bundled with the app — no separate download required.
+
+1. In the app, open **Toolbox → Browser Extension** and click **Open extension folder**.
 2. Open `chrome://extensions` (or `edge://extensions`) and turn on **Developer mode** in the top-right.
-3. Click **Load unpacked** and select the `browser-extension/` folder.
+3. Click **Load unpacked** and select the folder revealed in step 1.
 4. Pin the YDL GUI Helper icon next to the address bar.
 
 ### Use

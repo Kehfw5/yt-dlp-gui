@@ -152,7 +152,8 @@
     "appUpdating": "Downloading update...",
     "appUpdateSuccess": "Update complete, restarting",
     "appUpdateFailed": "Update failed: {e}",
-    "appIsLatest": "You are on the latest version"
+    "appIsLatest": "You are on the latest version",
+    "systemBinaryNotice": "Currently using the system-installed yt-dlp. \"Check Update\" only updates the app-managed copy. Switch the path mode to \"App Only\" for updates to take effect."
   },
   "detail": {
     "videoLink": "Video URL",
@@ -311,7 +312,7 @@
     "tagBeta": "Beta",
     "intro": "Install the YDL GUI Helper extension in any Chromium-based browser (Chrome / Edge / Brave / Vivaldi etc.) to send the current page URL and required cookies to this app with a single click — particularly helpful for login-required or members-only videos.",
     "installHeading": "Install",
-    "install1": "Click \"Open source folder\" below to view the browser-extension/ directory in the repository, then download or clone the whole repo.",
+    "install1": "Click \"Open extension folder\" below to reveal the bundled extension files in your file manager.",
     "install2": "Open chrome://extensions (or edge://extensions) and turn on \"Developer mode\" in the top-right.",
     "install3": "Click \"Load unpacked\" and select the browser-extension/ folder.",
     "install4": "Pin the YDL GUI Helper icon next to the address bar for quick access.",
@@ -322,8 +323,8 @@
     "privacyHeading": "Privacy",
     "privacyNote": "Cookies are processed locally only — they are passed straight to this app via a local protocol handler (ytdlp-gui://) and never uploaded to any server.",
     "supportedHeading": "Supported sites",
-    "openSource": "Open source folder",
-    "openReleases": "App releases"
+    "openLocalFolder": "Open extension folder",
+    "viewSource": "View source on GitHub"
   },
   "errors": {
     "unsupportedUrl": "This platform is not supported. Please check the URL",

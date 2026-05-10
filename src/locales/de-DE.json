@@ -146,7 +146,8 @@
     "appUpdating": "Update wird heruntergeladen...",
     "appUpdateSuccess": "Update abgeschlossen, Neustart läuft",
     "appUpdateFailed": "Update fehlgeschlagen: {e}",
-    "appIsLatest": "Du verwendest die neueste Version"
+    "appIsLatest": "Du verwendest die neueste Version",
+    "systemBinaryNotice": "Aktuell wird das systemweit installierte yt-dlp verwendet. \"Nach Update suchen\" aktualisiert nur die von der App verwaltete Kopie und wirkt sich nicht auf die genutzte Binärdatei aus. Stelle oben \"Tool-Pfadpriorität\" auf \"Nur App\" oder aktualisiere über deinen Paketmanager."
   },
   "detail": {
     "videoLink": "Video-URL",
@@ -305,7 +306,7 @@
     "tagBeta": "Beta",
     "intro": "Installiere die YDL GUI Helper-Erweiterung in einem Chromium-basierten Browser (Chrome / Edge / Brave / Vivaldi usw.), um die URL der aktuellen Seite und benötigte Cookies mit einem Klick an diese App zu senden — besonders nützlich für Videos, die einen Login erfordern oder nur Mitgliedern vorbehalten sind.",
     "installHeading": "Installation",
-    "install1": "Klicke unten auf „Quellverzeichnis öffnen“, um den Ordner browser-extension/ im Projekt-Repo anzusehen, und lade das gesamte Repo herunter oder klone es.",
+    "install1": "Klicke unten auf „Erweiterungsordner öffnen“, um den mit der App ausgelieferten Erweiterungsordner im Datei-Explorer anzuzeigen.",
     "install2": "Öffne chrome://extensions (oder edge://extensions) und aktiviere oben rechts den „Entwicklermodus“.",
     "install3": "Klicke auf „Entpackte Erweiterung laden“ und wähle den Ordner browser-extension/ aus.",
     "install4": "Befestige das YDL GUI Helper-Icon neben der Adressleiste für schnellen Zugriff.",
@@ -316,8 +317,8 @@
     "privacyHeading": "Datenschutz",
     "privacyNote": "Cookies werden ausschließlich lokal verarbeitet — sie werden über ein lokales Protokoll (ytdlp-gui://) direkt an diese App übergeben und an keinen Server hochgeladen.",
     "supportedHeading": "Unterstützte Seiten",
-    "openSource": "Quellverzeichnis öffnen",
-    "openReleases": "Release-Seite"
+    "openLocalFolder": "Erweiterungsordner öffnen",
+    "viewSource": "Quellcode auf GitHub ansehen"
   },
   "errors": {
     "unsupportedUrl": "Diese Plattform wird nicht unterstützt. Bitte URL prüfen",

@@ -12,15 +12,15 @@ static BINARY_PATH_RESOLVE_MODE: OnceLock<RwLock<BinaryPathResolveMode>> = OnceL
 
 fn get_path_resolve_mode() -> BinaryPathResolveMode {
     let lock = BINARY_PATH_RESOLVE_MODE
-        .get_or_init(|| RwLock::new(BinaryPathResolveMode::SystemPreferred));
+        .get_or_init(|| RwLock::new(BinaryPathResolveMode::AppOnly));
     lock.read()
         .map(|v| *v)
-        .unwrap_or(BinaryPathResolveMode::SystemPreferred)
+        .unwrap_or(BinaryPathResolveMode::AppOnly)
 }
 
 /// 设置二进制路径解析模式
-/// - system-preferred: 优先系统安装路径，其次应用管理路径（默认）
-/// - app-only: 仅使用应用管理路径
+/// - app-only: 仅使用应用管理路径（默认；保证「检测更新」始终对实际使用的副本生效）
+/// - system-preferred: 优先系统安装路径，其次应用管理路径
 pub fn set_binary_path_resolve_mode(mode: &str) -> Result<(), String> {
     let parsed = match mode {
         "system-preferred" => BinaryPathResolveMode::SystemPreferred,
@@ -29,7 +29,7 @@ pub fn set_binary_path_resolve_mode(mode: &str) -> Result<(), String> {
     };
 
     let lock = BINARY_PATH_RESOLVE_MODE
-        .get_or_init(|| RwLock::new(BinaryPathResolveMode::SystemPreferred));
+        .get_or_init(|| RwLock::new(BinaryPathResolveMode::AppOnly));
     let mut guard = lock
         .write()
         .map_err(|e| format!("err_set_path_mode:{}", e))?;
