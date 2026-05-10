@@ -7,6 +7,10 @@ import esES from "./es-ES.json";
 import ruRU from "./ru-RU.json";
 import zhTW from "./zh-TW.json";
 import arEG from "./ar-EG.json";
+import deDE from "./de-DE.json";
+import frFR from "./fr-FR.json";
+import ptBR from "./pt-BR.json";
+import viVN from "./vi-VN.json";
 
 // ==================== 语言注册表（新增语言只改这里 + 创建翻译文件） ====================
 
@@ -32,11 +36,15 @@ export const localeEntries: LocaleEntry[] = [
     match: (lang) => lang.startsWith("ar"),
     rtl: true,
   },
+  { code: "de-DE", flag: "🇩🇪", label: "Deutsch", match: (lang) => lang.startsWith("de") },
   { code: "en-US", flag: "🇺🇸", label: "English", match: (lang) => lang.startsWith("en") },
   { code: "es-ES", flag: "🇪🇸", label: "Español", match: (lang) => lang.startsWith("es") },
+  { code: "fr-FR", flag: "🇫🇷", label: "Français", match: (lang) => lang.startsWith("fr") },
   { code: "ja-JP", flag: "🇯🇵", label: "日本語", match: (lang) => lang.startsWith("ja") },
   { code: "ko-KR", flag: "🇰🇷", label: "한국어", match: (lang) => lang.startsWith("ko") },
+  { code: "pt-BR", flag: "🇧🇷", label: "Português", match: (lang) => lang.startsWith("pt") },
   { code: "ru-RU", flag: "🇷🇺", label: "Русский", match: (lang) => lang.startsWith("ru") },
+  { code: "vi-VN", flag: "🇻🇳", label: "Tiếng Việt", match: (lang) => lang.startsWith("vi") },
   {
     code: "zh-CN",
     flag: "🇨🇳",
@@ -88,13 +96,17 @@ const i18n = createI18n({
   locale: defaultLocale,
   fallbackLocale: "en-US",
   messages: {
-    "zh-CN": zhCN,
-    "en-US": enUS,
     "ar-EG": arEG,
+    "de-DE": deDE,
+    "en-US": enUS,
+    "es-ES": esES,
+    "fr-FR": frFR,
     "ja-JP": jaJP,
     "ko-KR": koKR,
-    "es-ES": esES,
+    "pt-BR": ptBR,
     "ru-RU": ruRU,
+    "vi-VN": viVN,
+    "zh-CN": zhCN,
     "zh-TW": zhTW,
   },
 });
