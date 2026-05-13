@@ -43,6 +43,16 @@ const router = createRouter({
           component: () => import("@/pages/toolbox/LiveChat.vue"),
         },
         {
+          path: "chapters",
+          name: "toolbox-chapters",
+          component: () => import("@/pages/toolbox/Chapters.vue"),
+        },
+        {
+          path: "comments",
+          name: "toolbox-comments",
+          component: () => import("@/pages/toolbox/Comments.vue"),
+        },
+        {
           path: "plugins",
           name: "toolbox-plugins",
           component: () => import("@/pages/toolbox/Plugins.vue"),

@@ -3,6 +3,8 @@ import type { Component } from "vue";
 import IconMdiImageOutline from "~icons/mdi/image-outline";
 import IconMdiSubtitlesOutline from "~icons/mdi/subtitles-outline";
 import IconMdiMessageTextOutline from "~icons/mdi/message-text-outline";
+import IconMdiFormatListNumbered from "~icons/mdi/format-list-numbered";
+import IconMdiCommentTextMultipleOutline from "~icons/mdi/comment-text-multiple-outline";
 import IconMdiPuzzleOutline from "~icons/mdi/puzzle-outline";
 import IconMdiOpenInApp from "~icons/mdi/open-in-app";
 import { useI18n } from "vue-i18n";
@@ -49,6 +51,23 @@ const tools: ToolItem[] = [
     tagKey: "toolbox.youtubeOnly",
   },
   {
+    key: "chapters",
+    icon: IconMdiFormatListNumbered,
+    color: "#d946ef",
+    bg: "rgba(217,70,239,0.1)",
+    titleKey: "toolbox.chaptersTitle",
+    descKey: "toolbox.chaptersDesc",
+  },
+  {
+    key: "comments",
+    icon: IconMdiCommentTextMultipleOutline,
+    color: "#ef4444",
+    bg: "rgba(239,68,68,0.1)",
+    titleKey: "toolbox.commentsTitle",
+    descKey: "toolbox.commentsDesc",
+    tagKey: "toolbox.youtubeOnly",
+  },
+  {
     key: "plugins",
     icon: IconMdiPuzzleOutline,
     color: "#8b5cf6",
@@ -80,45 +99,47 @@ const handleToolClick = (tool: ToolItem) => {
 </script>
 
 <template>
-  <div class="tools-grid">
-    <n-card
-      v-for="tool in tools"
-      :key="tool.key"
-      size="small"
-      hoverable
-      class="tool-card"
-      @click="handleToolClick(tool)"
-    >
-      <n-flex align="center" :size="10" :wrap="false">
-        <div class="tool-icon" :style="{ background: tool.bg }">
-          <n-icon :size="20" :color="tool.color">
-            <component :is="tool.icon" />
-          </n-icon>
-        </div>
-        <n-flex vertical :size="2" class="tool-info">
-          <n-flex align="center" :size="6" :wrap="false">
-            <n-text strong class="tool-title">{{ $t(tool.titleKey) }}</n-text>
-            <n-tag v-if="tool.tagKey" size="small" round :bordered="false" type="warning">
-              {{ $t(tool.tagKey) }}
-            </n-tag>
+  <div>
+    <div class="tools-grid">
+      <n-card
+        v-for="tool in tools"
+        :key="tool.key"
+        size="small"
+        hoverable
+        class="tool-card"
+        @click="handleToolClick(tool)"
+      >
+        <n-flex align="center" :size="10" :wrap="false">
+          <div class="tool-icon" :style="{ background: tool.bg }">
+            <n-icon :size="20" :color="tool.color">
+              <component :is="tool.icon" />
+            </n-icon>
+          </div>
+          <n-flex vertical :size="2" class="tool-info">
+            <n-flex align="center" :size="6" :wrap="false">
+              <n-text strong class="tool-title">{{ $t(tool.titleKey) }}</n-text>
+              <n-tag v-if="tool.tagKey" size="small" round :bordered="false" type="warning">
+                {{ $t(tool.tagKey) }}
+              </n-tag>
+            </n-flex>
+            <n-text depth="3" class="tool-desc">{{ $t(tool.descKey) }}</n-text>
           </n-flex>
-          <n-text depth="3" class="tool-desc">{{ $t(tool.descKey) }}</n-text>
+          <n-icon :size="16" class="tool-arrow" :depth="3">
+            <icon-mdi-chevron-right />
+          </n-icon>
         </n-flex>
-        <n-icon :size="16" class="tool-arrow" :depth="3">
-          <icon-mdi-chevron-right />
-        </n-icon>
-      </n-flex>
-    </n-card>
-  </div>
+      </n-card>
+    </div>
 
-  <BrowserExtensionModal v-model:show="showBrowserExtModal" />
+    <BrowserExtensionModal v-model:show="showBrowserExtModal" />
+  </div>
 </template>
 
 <style scoped lang="scss">
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 8px;
+  gap: 16px;
 }
 
 .tool-card {

@@ -167,6 +167,36 @@ export interface VideoInfo {
   playlist_count?: number;
 }
 
+export interface Chapter {
+  title: string;
+  start_time: number;
+  end_time: number;
+}
+
+export interface ChaptersInfo {
+  title: string;
+  duration: number | null;
+  chapters: Chapter[];
+}
+
+export interface VideoComment {
+  id: string;
+  parent: string;
+  author: string;
+  author_id: string;
+  text: string;
+  timestamp: number;
+  like_count: number;
+  is_favorited: boolean;
+  author_is_uploader: boolean;
+}
+
+export interface CommentsInfo {
+  title: string;
+  comment_count: number | null;
+  comments: VideoComment[];
+}
+
 export interface LiveChatMessage {
   idx: number;
   time: string;

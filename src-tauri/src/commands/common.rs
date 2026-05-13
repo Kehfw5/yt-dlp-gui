@@ -72,6 +72,14 @@ pub async fn run_ytdlp_json(
         "--ignore-config".to_string(),
         "--color".to_string(),
         "never".to_string(),
+        "--no-warnings".to_string(),
+        // 网络异常时快速失败：默认 retries=10、无 socket 超时，会卡住几分钟
+        "--socket-timeout".to_string(),
+        "15".to_string(),
+        "--retries".to_string(),
+        "3".to_string(),
+        "--extractor-retries".to_string(),
+        "2".to_string(),
     ];
     for a in extra_args {
         args.push(a.to_string());

@@ -79,6 +79,16 @@ onMounted(() => {
 
 <template>
   <n-flex vertical :size="12">
+    <n-flex align="center" :size="8">
+      <n-button strong secondary size="small" @click="$router.back()">
+        <template #icon>
+          <n-icon><icon-mdi-arrow-left /></n-icon>
+        </template>
+        {{ $t("common.back") }}
+      </n-button>
+      <n-text strong style="font-size: 15px">{{ $t("plugins.title") }}</n-text>
+    </n-flex>
+
     <n-text depth="3" style="font-size: 13px">
       {{ $t("plugins.pageDesc") }}
     </n-text>
