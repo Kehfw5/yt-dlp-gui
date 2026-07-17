@@ -94,21 +94,38 @@ jobs:
           fi
 
       # ============================================================
-      # 模拟器构建
+      # 编译 Rust（模拟器 target）
       # ============================================================
-      - name: Build for iOS Simulator
+      - name: Build Rust for simulator
         if: env.CI_BUILD_TYPE == 'simulator'
         run: |
-          echo "📱 Building for iOS Simulator..."
-          npx tauri ios build --debug -- \
+          echo "🔨 Building Rust lib for iOS Simulator..."
+          cd src-tauri
+          cargo build --target aarch64-apple-ios-sim
+          echo "✅ Rust build done"
+
+      # ============================================================
+      # Xcode 构建 + 打包 .app
+      # ============================================================
+      - name: Build with Xcode
+        if: env.CI_BUILD_TYPE == 'simulator'
+        run: |
+          echo "📱 Building with xcodebuild..."
+          cd src-tauri/gen/apple
+          xcodebuild build \
+            -project yt-dlp-gui.xcodeproj \
+            -scheme yt-dlp-gui_iOS \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
+            -configuration Debug \
             DEVELOPMENT_TEAM=XXXXXXXXXX \
             CODE_SIGN_STYLE=Manual \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
-          echo "✅ Simulator build completed"
+            CODE_SIGNING_ALLOWED=NO \
+            CONFIGURATION_BUILD_DIR="$(pwd)/build"
+          echo "✅ Xcode build done"
+          ls -la build/
 
       - name: Upload Simulator .app
         if: env.CI_BUILD_TYPE == 'simulator'
