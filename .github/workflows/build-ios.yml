@@ -102,11 +102,23 @@ jobs:
           echo "🔧 Disabling code signing..."
           PROJECT=$(find src-tauri/gen/apple -name "project.pbxproj" -path "*.xcodeproj/*" | head -1)
           echo "Project file: $PROJECT"
-          # 改为手动签名 + 空证书
+          # 显示当前签名相关设置
+          echo "=== Current signing settings ==="
+          grep -n -i 'CODE_SIGN\|DEVELOPMENT_TEAM\|PROVISIONING' "$PROJECT" || true
+          # 强制改为手动签名 + 设置伪 team ID（绕过 Xcode 检查）
           sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' "$PROJECT"
-          # 确保没有空的 DEVELOPMENT_TEAM 导致报错
-          sed -i '' '/DEVELOPMENT_TEAM = "";/d' "$PROJECT" || true
-          sed -i '' '/DEVELOPMENT_TEAM = \"\";/d' "$PROJECT" || true
+          sed -i '' 's/DEVELOPMENT_TEAM = "";/DEVELOPMENT_TEAM = XXXXXXXXXX;/g' "$PROJECT"
+          sed -i '' 's/DEVELOPMENT_TEAM = \"\";/DEVELOPMENT_TEAM = XXXXXXXXXX;/g' "$PROJECT"
+          # 添加 DEVELOPMENT_TEAM 如果不存在
+          if ! grep -q 'DEVELOPMENT_TEAM' "$PROJECT"; then
+            # 在 buildSettings 段中插入
+            sed -i '' '/buildSettings = {/a\
+            \t\t\t\tDEVELOPMENT_TEAM = XXXXXXXXXX;\
+            \t\t\t\tCODE_SIGN_STYLE = Manual;
+          ' "$PROJECT"
+          fi
+          echo "=== After fix ==="
+          grep -n -i 'CODE_SIGN\|DEVELOPMENT_TEAM\|PROVISIONING' "$PROJECT" || true
           echo "✅ Signing disabled"
 
       # ============================================================
