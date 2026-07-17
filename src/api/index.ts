@@ -15,7 +15,6 @@ let _serverUrl = "";
 
 /** 获取 Tauri invoke（local 模式已初始化时直接返回，否则动态 import） */
 let _tauriInvoke: Function | null = null;
-let _tauriListen: Function | null = null;
 
 async function getTauriInvoke() {
   if (!_tauriInvoke) {
@@ -23,14 +22,6 @@ async function getTauriInvoke() {
     _tauriInvoke = invoke;
   }
   return _tauriInvoke;
-}
-
-async function getTauriListen() {
-  if (!_tauriListen) {
-    const { listen } = await import("@tauri-apps/api/event");
-    _tauriListen = listen;
-  }
-  return _tauriListen;
 }
 
 /** 初始化 API（App.vue 启动时调用一次） */

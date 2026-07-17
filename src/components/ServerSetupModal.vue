@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { useSettingStore } from "@/stores/setting";
 import { useStatusStore } from "@/stores/status";
-import { useI18n } from "vue-i18n";
 import { setServerUrl, testConnection, getServerUrl } from "@/api";
 
-const { t } = useI18n();
 const settingStore = useSettingStore();
 const statusStore = useStatusStore();
 
