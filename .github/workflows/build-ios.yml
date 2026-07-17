@@ -100,14 +100,12 @@ jobs:
         if: env.CI_BUILD_TYPE == 'simulator'
         run: |
           echo "📱 Building for iOS Simulator..."
-          # 用 tauri ios build 构建（它会处理 Rust 编译、npm scripts、工作目录等）
-          # 通过环境变量禁用签名
-          DEVELOPMENT_TEAM=XXXXXXXXXX \
-          CODE_SIGN_STYLE=Manual \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO \
-          CODE_SIGNING_ALLOWED=NO \
-            npx tauri ios build --debug
+          npx tauri ios build --debug -- \
+            DEVELOPMENT_TEAM=XXXXXXXXXX \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
           echo "✅ Simulator build completed"
 
       - name: Upload Simulator .app
