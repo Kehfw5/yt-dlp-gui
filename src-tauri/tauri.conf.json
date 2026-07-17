@@ -40,11 +40,19 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "iOS": {
+      "minimumSystemVersion": "14.0",
+      "developmentTeam": "",
+      "provisioningProfile": ""
+    }
   },
   "plugins": {
     "deep-link": {
       "desktop": {
+        "schemes": ["ytdlp-gui"]
+      },
+      "mobile": {
         "schemes": ["ytdlp-gui"]
       }
     },

@@ -23,3 +23,105 @@ img {
 .v-binder-follower-container {
   direction: ltr !important;
 }
+
+// ========== 移动端响应式样式 ==========
+
+// iOS 安全区域适配（刘海屏 / 底部指示条）
+:root {
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+}
+
+@media (max-width: 768px) {
+  // 隐藏导航标签文字，仅显示图标
+  .nav-label {
+    display: none !important;
+  }
+
+  // 调整页面内边距
+  .n-layout .n-layout {
+    top: 48px !important;
+
+    .n-layout-content {
+      padding: 8px !important;
+    }
+  }
+
+  // 缩小头部高度
+  .app-header {
+    height: 48px !important;
+    padding: 0 8px !important;
+
+    .logo {
+      gap: 4px !important;
+
+      .logo-img {
+        width: 22px !important;
+        height: 22px !important;
+      }
+
+      .logo-text {
+        font-size: 14px !important;
+      }
+    }
+
+    .header-side {
+      width: auto !important;
+    }
+  }
+
+  // 设置页面自适应
+  .settings-page {
+    .info-row {
+      flex-wrap: wrap;
+      gap: 4px;
+
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  // 卡片间距优化
+  .section-card {
+    margin-bottom: 8px;
+  }
+
+  // 弹窗全屏适配
+  .n-modal-card {
+    max-width: calc(100vw - 32px) !important;
+  }
+}
+
+// 小屏手机（< 480px）
+@media (max-width: 480px) {
+  .app-header {
+    .header-side-right {
+      gap: 0 !important;
+    }
+  }
+
+  // 进度条信息精简
+  .download-bar {
+    flex-wrap: wrap;
+    gap: 4px;
+    font-size: 12px;
+  }
+}
+
+// iOS 安全区域 padding
+@supports (padding-top: env(safe-area-inset-top)) {
+  .app-header {
+    padding-top: var(--safe-area-top) !important;
+  }
+
+  .n-layout .n-layout-content {
+    padding-bottom: calc(16px + var(--safe-area-bottom)) !important;
+  }
+
+  .app-footer {
+    padding-bottom: calc(4px + var(--safe-area-bottom)) !important;
+  }
+}

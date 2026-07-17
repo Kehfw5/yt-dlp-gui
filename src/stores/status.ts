@@ -15,6 +15,9 @@ export const useStatusStore = defineStore("status", () => {
   /** Deno 未安装提示弹窗 */
   const showDenoSetupModal = ref(false);
 
+  /** 服务端设置弹窗（移动端自动弹出） */
+  const showServerSetupModal = ref(false);
+
   return {
     showCookieModal,
     showUpdateModal,
@@ -22,5 +25,6 @@ export const useStatusStore = defineStore("status", () => {
     updateNotes,
     showYtdlpSetupModal,
     showDenoSetupModal,
+    showServerSetupModal,
   };
 });

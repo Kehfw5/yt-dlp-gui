@@ -17,7 +17,8 @@
     "selectAll": "全选",
     "deselectAll": "取消全选",
     "saveFailed": "保存失败: {e}",
-    "downloadFailed": "下载失败: {e}"
+    "downloadFailed": "下载失败: {e}",
+    "later": "稍后"
   },
   "clipboard": {
     "empty": "剪贴板为空",
@@ -159,7 +160,17 @@
     "appUpdateSuccess": "更新完成，即将重启",
     "appUpdateFailed": "更新失败: {e}",
     "appIsLatest": "当前已是最新版本",
-    "systemBinaryNotice": "当前使用的是系统安装的 yt-dlp，「检测更新」只会更新应用管理的副本，不会影响实际使用的版本。请将上方「工具路径优先级」切换为「仅应用」，或通过系统包管理器更新。"
+    "systemBinaryNotice": "当前使用的是系统安装的 yt-dlp，「检测更新」只会更新应用管理的副本，不会影响实际使用的版本。请将上方「工具路径优先级」切换为「仅应用」，或通过系统包管理器更新。",
+    "lanAccess": "局域网访问",
+    "lanEnabled": "允许局域网设备连接",
+    "lanPort": "端口",
+    "lanAddress": "访问地址",
+    "lanStartFailed": "启动局域网服务失败: {e}",
+    "serverUrl": "服务器地址",
+    "serverUrlPlaceholder": "例如 http://192.168.1.100:8728",
+    "testConnection": "测试连接",
+    "connectionSuccess": "连接成功！",
+    "connectionFailed": "连接失败"
   },
   "detail": {
     "videoLink": "视频链接",
@@ -433,6 +444,9 @@
     "denoDesc": "检测到你正在下载 YouTube 视频，但尚未安装 Deno JS 运行时。缺少它可能导致部分视频格式缺失或无法下载。",
     "denoHint": "Deno 是 yt-dlp 解析 YouTube 视频信息所需的 JavaScript 运行时。安装后可获取完整的格式列表，包括更高画质的选项。",
     "goToSettings": "前往设置",
-    "later": "稍后再说"
+    "later": "稍后再说",
+    "serverTitle": "连接到服务器",
+    "serverDesc": "此设备无法直接运行 yt-dlp。请连接到已在桌面端开启局域网访问的 YDL GUI。",
+    "serverHint": "在电脑上：打开 YDL GUI → 设置 → 开启「允许局域网设备连接」→ 在此输入显示的地址"
   }
 }

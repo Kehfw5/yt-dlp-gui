@@ -1,7 +1,5 @@
 import { defineStore } from "pinia";
-import { listen } from "@tauri-apps/api/event";
-import { invoke } from "@tauri-apps/api/core";
-import { getCurrentWindow, ProgressBarStatus } from "@tauri-apps/api/window";
+import { invoke, on } from "@/api";
 import {
   isPermissionGranted,
   requestPermission,
@@ -74,13 +72,17 @@ export const useDownloadStore = defineStore("download", () => {
     }
 
     if (mode === "system" || mode === "all") {
-      let granted = await isPermissionGranted();
-      if (!granted) {
-        const permission = await requestPermission();
-        granted = permission === "granted";
-      }
-      if (granted) {
-        sendNotification({ title, body });
+      try {
+        let granted = await isPermissionGranted();
+        if (!granted) {
+          const permission = await requestPermission();
+          granted = permission === "granted";
+        }
+        if (granted) {
+          sendNotification({ title, body });
+        }
+      } catch {
+        // 移动端/远程模式下通知 API 不可用，静默忽略
       }
     }
   };
@@ -94,7 +96,7 @@ export const useDownloadStore = defineStore("download", () => {
     }, 500);
   };
 
-  /** 从 IndexedDB 恢复任务列表，将之前未完成的任务标记为中断，移除文件已不存在的已完成任务 */
+  /** 从 IndexedDB 恢复任务列表 */
   const loadTasks = async () => {
     const saved = await storage.getItem<DownloadTask[]>(STORAGE_KEY);
     if (saved && Array.isArray(saved)) {
@@ -108,7 +110,6 @@ export const useDownloadStore = defineStore("download", () => {
         if (!task.createdAt) task.createdAt = Date.now();
       }
 
-      // Filter out completed tasks whose output files no longer exist
       const completedWithFile = saved.filter((t) => t.status === "completed" && t.outputFile);
       if (completedWithFile.length > 0) {
         try {
@@ -125,7 +126,7 @@ export const useDownloadStore = defineStore("download", () => {
             return;
           }
         } catch {
-          // If check fails, keep all tasks
+          // 检查失败则保留全部
         }
       }
 
@@ -136,13 +137,28 @@ export const useDownloadStore = defineStore("download", () => {
 
   watch(tasks, saveTasks, { deep: true });
 
-  /** 更新任务栏进度条 */
-  const updateTaskbarProgress = () => {
+  /** 更新任务栏进度条（仅桌面端） */
+  let _windowApi: typeof import("@tauri-apps/api/window") | null = null;
+  const getWindowApi = async () => {
+    if (!_windowApi) {
+      try {
+        _windowApi = await import("@tauri-apps/api/window");
+      } catch {
+        _windowApi = null;
+      }
+    }
+    return _windowApi;
+  };
+
+  const updateTaskbarProgress = async () => {
+    const winApi = await getWindowApi();
+    if (!winApi) return;
+
     const settingStore = useSettingStore();
-    const appWindow = getCurrentWindow();
+    const appWindow = winApi.getCurrentWindow();
 
     if (!settingStore.showTaskbarProgress) {
-      appWindow.setProgressBar({ status: ProgressBarStatus.None });
+      appWindow.setProgressBar({ status: winApi.ProgressBarStatus.None });
       return;
     }
 
@@ -153,46 +169,46 @@ export const useDownloadStore = defineStore("download", () => {
       const avg = Math.round(
         downloading.reduce((sum, t) => sum + (t.percent || 0), 0) / downloading.length,
       );
-      appWindow.setProgressBar({ status: ProgressBarStatus.Normal, progress: avg });
+      appWindow.setProgressBar({ status: winApi.ProgressBarStatus.Normal, progress: avg });
     } else if (paused.length > 0) {
       const avg = Math.round(paused.reduce((sum, t) => sum + (t.percent || 0), 0) / paused.length);
-      appWindow.setProgressBar({ status: ProgressBarStatus.Paused, progress: avg });
+      appWindow.setProgressBar({ status: winApi.ProgressBarStatus.Paused, progress: avg });
     } else {
-      appWindow.setProgressBar({ status: ProgressBarStatus.None });
+      appWindow.setProgressBar({ status: winApi.ProgressBarStatus.None });
     }
   };
 
-  /** 注册 Tauri 后端事件监听，仅初始化一次 */
-  const setupListeners = async () => {
+  /** 注册事件监听，仅初始化一次 */
+  const setupListeners = () => {
     if (listenersSetup) return;
     listenersSetup = true;
 
-    await listen<ProgressPayload>("download-progress", (event) => {
-      const task = tasks.value.find((t) => t.id === event.payload.id);
+    on<ProgressPayload>("download-progress", (event) => {
+      const task = tasks.value.find((t) => t.id === event.id);
       if (task && task.status === "downloading") {
-        task.percent = event.payload.percent;
-        task.speed = event.payload.speed;
-        task.eta = event.payload.eta;
-        if (event.payload.downloaded) task.downloaded = event.payload.downloaded;
-        if (event.payload.total) task.total = event.payload.total;
+        task.percent = event.percent;
+        task.speed = event.speed;
+        task.eta = event.eta;
+        if (event.downloaded) task.downloaded = event.downloaded;
+        if (event.total) task.total = event.total;
       }
       updateTaskbarProgress();
     });
 
-    await listen<{ id: string; line: string }>("download-log", (event) => {
-      const task = tasks.value.find((t) => t.id === event.payload.id);
+    on<{ id: string; line: string }>("download-log", (event) => {
+      const task = tasks.value.find((t) => t.id === event.id);
       if (task) {
-        task.logs.push(event.payload.line);
+        task.logs.push(event.line);
       }
     });
 
-    await listen<{ id: string; outputFile: string }>("download-complete", (event) => {
-      const task = tasks.value.find((t) => t.id === event.payload.id);
+    on<{ id: string; outputFile: string }>("download-complete", (event) => {
+      const task = tasks.value.find((t) => t.id === event.id);
       if (task) {
         task.status = "completed";
         task.percent = 100;
         task.speed = "";
-        if (event.payload.outputFile) task.outputFile = event.payload.outputFile;
+        if (event.outputFile) task.outputFile = event.outputFile;
         notify(
           i18n.global.t("downloads.notifyComplete"),
           task.title || i18n.global.t("downloads.notifyCompleteBody"),
@@ -202,11 +218,11 @@ export const useDownloadStore = defineStore("download", () => {
       tryStartNext();
     });
 
-    await listen<{ id: string; error: string }>("download-error", (event) => {
-      const task = tasks.value.find((t) => t.id === event.payload.id);
+    on<{ id: string; error: string }>("download-error", (event) => {
+      const task = tasks.value.find((t) => t.id === event.id);
       if (task && task.status !== "cancelled") {
         task.status = "error";
-        task.error = event.payload.error;
+        task.error = event.error;
         task.speed = "";
       }
       updateTaskbarProgress();
@@ -222,7 +238,7 @@ export const useDownloadStore = defineStore("download", () => {
     tasks.value.unshift(task);
   };
 
-  /** 暂停指定下载任务，通过 Tauri 命令挂起后端进程 */
+  /** 暂停指定下载任务 */
   const pauseTask = async (id: string) => {
     await invoke("pause_download", { id });
     const task = tasks.value.find((t) => t.id === id);
@@ -255,7 +271,7 @@ export const useDownloadStore = defineStore("download", () => {
       try {
         await invoke("cancel_download", { id, deleteFiles: true });
       } catch {
-        // Process might have already exited
+        // 进程可能已退出
       }
     }
 
@@ -263,7 +279,7 @@ export const useDownloadStore = defineStore("download", () => {
     tryStartNext();
   };
 
-  /** 重新下载失败或已取消的任务，生成新 ID 并重置状态 */
+  /** 重新下载失败或已取消的任务 */
   const retryTask = async (id: string) => {
     const task = tasks.value.find((t) => t.id === id);
     if (!task) return;

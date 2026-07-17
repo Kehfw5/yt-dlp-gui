@@ -29,3 +29,20 @@ dist-ssr
 ~
 *.key
 *.key.pub
+
+# iOS / Xcode build artifacts
+src-tauri/gen/ios/build/
+*.xcarchive
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Xcode user data
+src-tauri/gen/ios/*.xcworkspace/xcuserdata/
+src-tauri/gen/ios/*.xcodeproj/xcuserdata/
+src-tauri/gen/ios/*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcuserstate
+
+# Cargo workspace build artifacts
+target/
+yt-dlp-shared/target/

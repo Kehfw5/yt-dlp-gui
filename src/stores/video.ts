@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { invoke } from "@tauri-apps/api/core";
+import { invoke } from "@/api";
 import { showErrorDialog } from "@/utils/format";
 import { useSettingStore } from "@/stores/setting";
 import { useStatusStore } from "@/stores/status";

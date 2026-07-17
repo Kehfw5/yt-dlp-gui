@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { check } from "@tauri-apps/plugin-updater";
-import { relaunch } from "@tauri-apps/plugin-process";
-import { getVersion } from "@tauri-apps/api/app";
 import { useStatusStore } from "@/stores/status";
 import { useI18n } from "vue-i18n";
 
@@ -15,13 +12,22 @@ const contentLength = ref(0);
 const downloaded = ref(0);
 
 onMounted(async () => {
-  currentVersion.value = await getVersion();
+  try {
+    const { getVersion } = await import("@tauri-apps/api/app");
+    currentVersion.value = await getVersion();
+  } catch {
+    currentVersion.value = "0.0.0";
+  }
 });
 
 const handleUpdate = async () => {
   downloading.value = true;
   progress.value = 0;
   try {
+    const [{ check }, { relaunch }] = await Promise.all([
+      import("@tauri-apps/plugin-updater"),
+      import("@tauri-apps/plugin-process"),
+    ]);
     const update = await check();
     if (!update) return;
 

@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { getCurrentWindow } from "@tauri-apps/api/window";
-import { invoke } from "@tauri-apps/api/core";
+import { invoke, initApi, setServerUrl } from "@/api";
 import { listen } from "@tauri-apps/api/event";
 import { exit } from "@tauri-apps/plugin-process";
-import { check } from "@tauri-apps/plugin-updater";
 import { onOpenUrl, getCurrent as getCurrentDeepLink } from "@tauri-apps/plugin-deep-link";
 import IconMdiHome from "~icons/mdi/home";
 import IconMdiPlaylistPlay from "~icons/mdi/playlist-play";
@@ -26,6 +24,18 @@ const downloadStore = useDownloadStore();
 const pendingStore = usePendingStore();
 const themeVars = useThemeVars();
 
+// 平台检测：通过 invoke 获取平台信息
+const platform = ref<"windows" | "macos" | "linux" | "ios" | "android">("linux");
+const isDesktop = computed(() => ["windows", "macos", "linux"].includes(platform.value));
+invoke<string>("get_platform")
+  .then((p) => {
+    platform.value = p as typeof platform.value;
+  })
+  .catch(() => {
+    // 降级：无法获取平台时默认为 desktop
+    platform.value = "linux";
+  });
+
 const navBadgeCounts = computed<Record<string, number>>(() => ({
   pending: pendingStore.items.length,
   downloads: downloadStore.tasks.filter(
@@ -33,12 +43,13 @@ const navBadgeCounts = computed<Record<string, number>>(() => ({
   ).length,
 }));
 
-/** 同步托盘菜单语言 */
+/** 同步托盘菜单语言（仅桌面端） */
 const syncTrayMenu = () => {
+  if (!isDesktop.value) return;
   invoke("update_tray_menu", {
     showLabel: t("tray.show"),
     quitLabel: t("tray.quit"),
-  });
+  }).catch(() => {});
 };
 
 watch(() => settingStore.locale, syncTrayMenu);
@@ -73,21 +84,30 @@ const navItems: { key: string; icon: Component; labelKey: string }[] = [
   { key: "toolbox", icon: IconMdiToolbox, labelKey: "nav.toolbox" },
 ];
 
-const win = getCurrentWindow();
+// 窗口关闭行为（仅桌面端，移动端由系统管理）
+if (isDesktop.value) {
+  try {
+    const { getCurrentWindow } = await import("@tauri-apps/api/window");
+    const win = getCurrentWindow();
 
-// 关闭窗口时的行为
-win.onCloseRequested(async (event) => {
-  if (settingStore.closeToTray) {
-    event.preventDefault();
-    await win.hide();
-  } else {
-    event.preventDefault();
-    handleQuitRequest();
+    win.onCloseRequested(async (event) => {
+      if (settingStore.closeToTray) {
+        event.preventDefault();
+        await win.hide();
+      } else {
+        event.preventDefault();
+        handleQuitRequest();
+      }
+    });
+  } catch {
+    // 桌面端 API 不可用，忽略
   }
-});
+}
 
-// 监听托盘退出请求
-listen("tray-quit-requested", () => handleQuitRequest());
+// 监听托盘退出请求（仅桌面端）
+if (isDesktop.value) {
+  listen("tray-quit-requested", () => handleQuitRequest());
+}
 
 /** 同一 URL 短时间内重复送达时去重，避免 onOpenUrl + getCurrent 同时触发 */
 let lastDeepLink = "";
@@ -117,10 +137,12 @@ const handleDeepLink = (deepLinkUrl: string) => {
   }
 };
 
-/** 启动时自动检查应用更新 */
+/** 启动时自动检查应用更新（仅桌面端） */
 const checkAppUpdate = async () => {
+  if (!isDesktop.value) return;
   try {
     const statusStore = useStatusStore();
+    const { check } = await import("@tauri-apps/plugin-updater");
     const update = await check();
     if (update) {
       statusStore.updateVersion = update.version;
@@ -133,13 +155,42 @@ const checkAppUpdate = async () => {
 };
 
 onMounted(async () => {
-  win.show();
+  // 自动检测平台并初始化 API
+  await initApi();
+
+  // 获取平台信息
+  const p = await invoke<string>("get_platform").catch(() => "unknown");
+  platform.value = p as typeof platform.value;
+
+  // 移动端自动检测：如果没有配置过服务端地址，弹窗提示
+  if (["ios", "android"].includes(platform.value)) {
+    if (!settingStore.serverUrl) {
+      const statusStore = useStatusStore();
+      statusStore.showServerSetupModal = true;
+    } else {
+      setServerUrl(settingStore.serverUrl);
+    }
+  }
+
+  // 桌面端：如开启了 LAN 访问，启动内嵌 HTTP 服务
+  if (isDesktop.value && settingStore.lanEnabled) {
+    invoke("start_lan_server", { port: settingStore.lanPort })
+      .then(() => console.log("LAN server started on port", settingStore.lanPort))
+      .catch((e) => console.warn("Failed to start LAN server:", e));
+  }
+
+  // 桌面端：显示窗口
+  if (isDesktop.value) {
+    try {
+      const { getCurrentWindow } = await import("@tauri-apps/api/window");
+      getCurrentWindow().show();
+    } catch {}
+  }
   syncTrayMenu();
   if (settingStore.autoCheckUpdate) {
     checkAppUpdate();
   }
-  // 冷启动：应用是被深链接拉起的，立刻读取触发 URL 并填充
-  // （onOpenUrl 在监听器注册前到达的事件可能丢失，必须用 getCurrent 兜底）
+  // 深链接处理
   try {
     const initial = await getCurrentDeepLink();
     if (initial?.length) {
@@ -148,11 +199,9 @@ onMounted(async () => {
   } catch {
     // 插件不可用时静默忽略
   }
-  // 应用运行期间收到的深链接
   onOpenUrl((urls) => {
     for (const u of urls) handleDeepLink(u);
   });
-  // single-instance 转发的深链接（应用已运行时再次唤起）
   listen<string>("deep-link-url", (event) => {
     handleDeepLink(event.payload);
   });
@@ -164,6 +213,7 @@ onMounted(async () => {
     <CookieModal />
     <UpdateModal />
     <SetupModal />
+    <ServerSetupModal />
     <n-layout style="height: 100vh">
       <n-layout-header bordered class="app-header">
         <div class="header-side">

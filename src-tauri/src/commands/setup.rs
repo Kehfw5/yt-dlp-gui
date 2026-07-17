@@ -25,6 +25,10 @@ pub fn get_platform() -> String {
         "windows".to_string()
     } else if cfg!(target_os = "macos") {
         "macos".to_string()
+    } else if cfg!(target_os = "ios") {
+        "ios".to_string()
+    } else if cfg!(target_os = "android") {
+        "android".to_string()
     } else {
         "linux".to_string()
     }

@@ -65,6 +65,15 @@ export const useSettingStore = defineStore(
     /** 在任务栏显示下载进度 */
     const showTaskbarProgress = ref(true);
 
+    /** 允许局域网设备连接（开启内嵌 HTTP 服务） */
+    const lanEnabled = ref(false);
+
+    /** LAN 服务端口 */
+    const lanPort = ref(8728);
+
+    /** 远程服务端地址（移动端使用） */
+    const serverUrl = ref("");
+
     return {
       locale,
       themeMode,
@@ -85,6 +94,9 @@ export const useSettingStore = defineStore(
       youtubePoToken,
       youtubeVisitorData,
       showTaskbarProgress,
+      lanEnabled,
+      lanPort,
+      serverUrl,
     };
   },
   {

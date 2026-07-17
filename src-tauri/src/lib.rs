@@ -1,19 +1,22 @@
-use tauri::menu::{Menu, MenuItem};
-use tauri::path::BaseDirectory;
-use tauri::tray::TrayIconEvent;
 use tauri::Emitter;
 use tauri::Manager;
-use tauri_plugin_opener::OpenerExt;
 
 mod commands;
 mod parser;
 mod process;
+mod server;
 mod utils;
+
+// ========== Common commands (registered on all platforms) ==========
 
 /// Reveal the bundled browser-extension folder in the OS file manager
 /// and return the absolute path.
+#[cfg(not(any(target_os = "android", target_os = "ios")))]
 #[tauri::command]
 fn reveal_browser_extension(app: tauri::AppHandle) -> Result<String, String> {
+    use tauri::path::BaseDirectory;
+    use tauri_plugin_opener::OpenerExt;
+
     let path = app
         .path()
         .resolve("browser-extension", BaseDirectory::Resource)
@@ -25,12 +28,15 @@ fn reveal_browser_extension(app: tauri::AppHandle) -> Result<String, String> {
     Ok(path_str)
 }
 
+#[cfg(not(any(target_os = "android", target_os = "ios")))]
 #[tauri::command]
 fn update_tray_menu(
     app: tauri::AppHandle,
     show_label: String,
     quit_label: String,
 ) -> Result<(), String> {
+    use tauri::menu::{Menu, MenuItem};
+
     if let Some(tray) = app.tray_by_id("main") {
         let show = MenuItem::with_id(&app, "show", &show_label, true, None::<&str>)
             .map_err(|e| e.to_string())?;
@@ -42,8 +48,72 @@ fn update_tray_menu(
     Ok(())
 }
 
-#[cfg_attr(mobile, tauri::mobile_entry_point)]
-pub fn run() {
+/// Start LAN HTTP server for remote device access
+#[tauri::command]
+fn start_lan_server(app: tauri::AppHandle, port: u16) -> Result<(), String> {
+    server::start_server(app, port)
+}
+
+// ========== Macro for registering all common commands ==========
+
+macro_rules! common_commands {
+    () => {
+        tauri::generate_handler![
+            commands::get_platform,
+            commands::set_binary_path_resolve_mode,
+            commands::set_youtube_extractor_args,
+            commands::get_ytdlp_status,
+            commands::download_ytdlp,
+            commands::update_ytdlp,
+            commands::get_deno_status,
+            commands::download_deno,
+            commands::check_plugin_installed,
+            commands::install_plugin,
+            commands::uninstall_plugin,
+            commands::save_cookie_text,
+            commands::fetch_video_info,
+            commands::start_download,
+            commands::pause_download,
+            commands::resume_download,
+            commands::cancel_download,
+            commands::check_files_exist,
+            commands::delete_file,
+            commands::tool_download_thumbnail,
+            commands::tool_fetch_thumbnails,
+            commands::tool_save_thumbnail,
+            commands::tool_download_subtitles,
+            commands::tool_fetch_subtitles,
+            commands::tool_save_subtitle,
+            commands::tool_download_text,
+            commands::tool_save_text_to_file,
+            commands::tool_fetch_live_chat,
+            commands::tool_fetch_chapters,
+            commands::tool_fetch_comments,
+        ]
+    };
+}
+
+macro_rules! common_plugins {
+    ($builder:expr) => {
+        $builder
+            .plugin(tauri_plugin_opener::init())
+            .plugin(tauri_plugin_shell::init())
+            .plugin(tauri_plugin_dialog::init())
+            .plugin(tauri_plugin_clipboard_manager::init())
+            .plugin(tauri_plugin_notification::init())
+            .plugin(tauri_plugin_process::init())
+            .plugin(tauri_plugin_deep_link::init())
+    };
+}
+
+// ========== Desktop app builder ==========
+
+#[cfg(not(any(target_os = "android", target_os = "ios")))]
+fn build_desktop_app() {
+    use tauri::menu::{Menu, MenuItem};
+    use tauri::tray::TrayIconEvent;
+    use tauri_plugin_opener::OpenerExt;
+
     tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_opener::init())
@@ -111,6 +181,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             update_tray_menu,
             reveal_browser_extension,
+            start_lan_server,
             commands::get_platform,
             commands::set_binary_path_resolve_mode,
             commands::set_youtube_extractor_args,
@@ -144,4 +215,69 @@ pub fn run() {
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+// ========== Mobile app builder ==========
+
+#[cfg(any(target_os = "android", target_os = "ios"))]
+fn build_mobile_app() {
+    tauri::Builder::default()
+        .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_clipboard_manager::init())
+        .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_deep_link::init())
+        .setup(|_app| {
+            // Mobile: no tray icon, no menu, no single-instance
+            // Window management is handled by the native OS
+            Ok(())
+        })
+        .manage(commands::DownloadState::default())
+        .invoke_handler(tauri::generate_handler![
+            commands::get_platform,
+            commands::set_binary_path_resolve_mode,
+            commands::set_youtube_extractor_args,
+            commands::get_ytdlp_status,
+            commands::download_ytdlp,
+            commands::update_ytdlp,
+            commands::get_deno_status,
+            commands::download_deno,
+            commands::check_plugin_installed,
+            commands::install_plugin,
+            commands::uninstall_plugin,
+            commands::save_cookie_text,
+            commands::fetch_video_info,
+            commands::start_download,
+            commands::pause_download,
+            commands::resume_download,
+            commands::cancel_download,
+            commands::check_files_exist,
+            commands::delete_file,
+            commands::tool_download_thumbnail,
+            commands::tool_fetch_thumbnails,
+            commands::tool_save_thumbnail,
+            commands::tool_download_subtitles,
+            commands::tool_fetch_subtitles,
+            commands::tool_save_subtitle,
+            commands::tool_download_text,
+            commands::tool_save_text_to_file,
+            commands::tool_fetch_live_chat,
+            commands::tool_fetch_chapters,
+            commands::tool_fetch_comments,
+        ])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}
+
+// ========== Entry point ==========
+
+#[cfg_attr(any(target_os = "android", target_os = "ios"), tauri::mobile_entry_point)]
+pub fn run() {
+    #[cfg(not(any(target_os = "android", target_os = "ios")))]
+    build_desktop_app();
+
+    #[cfg(any(target_os = "android", target_os = "ios"))]
+    build_mobile_app();
 }

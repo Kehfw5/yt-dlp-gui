@@ -17,7 +17,8 @@
     "selectAll": "Select All",
     "deselectAll": "Deselect All",
     "saveFailed": "Save failed: {e}",
-    "downloadFailed": "Download failed: {e}"
+    "downloadFailed": "Download failed: {e}",
+    "later": "Later"
   },
   "clipboard": {
     "empty": "Clipboard is empty",
@@ -159,7 +160,17 @@
     "appUpdateSuccess": "Update complete, restarting",
     "appUpdateFailed": "Update failed: {e}",
     "appIsLatest": "You are on the latest version",
-    "systemBinaryNotice": "Currently using the system-installed yt-dlp. \"Check Update\" only updates the app-managed copy. Switch the path mode to \"App Only\" for updates to take effect."
+    "systemBinaryNotice": "Currently using the system-installed yt-dlp. \"Check Update\" only updates the app-managed copy. Switch the path mode to \"App Only\" for updates to take effect.",
+    "lanAccess": "LAN Access",
+    "lanEnabled": "Allow LAN connections",
+    "lanPort": "Port",
+    "lanAddress": "Access URL",
+    "lanStartFailed": "Failed to start LAN server: {e}",
+    "serverUrl": "Server Address",
+    "serverUrlPlaceholder": "e.g. http://192.168.1.100:8728",
+    "testConnection": "Test Connection",
+    "connectionSuccess": "Connected successfully!",
+    "connectionFailed": "Connection failed"
   },
   "detail": {
     "videoLink": "Video URL",
@@ -433,6 +444,9 @@
     "denoDesc": "You are downloading a YouTube video, but Deno JS runtime is not installed. Some video formats may be missing or unavailable without it.",
     "denoHint": "Deno is a JavaScript runtime required by yt-dlp to parse YouTube video info. Installing it enables the full format list, including higher quality options.",
     "goToSettings": "Go to Settings",
-    "later": "Later"
+    "later": "Later",
+    "serverTitle": "Connect to Server",
+    "serverDesc": "To download videos on this device, connect to a desktop running YDL GUI with LAN access enabled.",
+    "serverHint": "On your desktop: open YDL GUI → Settings → enable \"Allow LAN connections\" → enter the address shown here"
   }
 }

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { YtdlpStatus, DenoStatus, DownloadProgress } from "@/types";
-import { invoke } from "@tauri-apps/api/core";
+import { invoke } from "@/api";
 import { listen } from "@tauri-apps/api/event";
-import { check } from "@tauri-apps/plugin-updater";
 import { useSettingStore } from "@/stores/setting";
 import { useStatusStore } from "@/stores/status";
 import { useI18n } from "vue-i18n";
@@ -31,6 +30,23 @@ const themeModeOptions = computed(() => [
   { label: t("settings.themeLight"), value: "light" },
   { label: t("settings.themeDark"), value: "dark" },
 ]);
+
+const lanAccessUrl = computed(() => {
+  // 显示本机可能的局域网地址
+  return `http://<your-ip>:${settingStore.lanPort}`;
+});
+
+// 监听 LAN 开关，自动启动/提示服务
+watch(
+  () => settingStore.lanEnabled,
+  (enabled) => {
+    if (enabled) {
+      invoke("start_lan_server", { port: settingStore.lanPort }).catch((e) => {
+        window.$message.warning(t("settings.lanStartFailed", { e }));
+      });
+    }
+  },
+);
 
 const concurrentFragmentsOptions = computed(() => [
   { label: t("settings.disabled"), value: 0 },
@@ -166,12 +182,13 @@ const handleDownloadDeno = async () => {
   }
 };
 
-/** 检查应用更新 */
+/** 检查应用更新（仅桌面端） */
 const appUpdateChecking = ref(false);
 
 const handleCheckAppUpdate = async () => {
   appUpdateChecking.value = true;
   try {
+    const { check } = await import("@tauri-apps/plugin-updater");
     const update = await check();
     if (update) {
       statusStore.updateVersion = update.version;
@@ -246,6 +263,31 @@ watch(
           style="width: 160px"
           size="small"
         />
+      </div>
+    </n-card>
+
+    <n-card :title="$t('settings.lanAccess')" size="small" class="section-card">
+      <div class="info-list">
+        <div class="info-row">
+          <span class="info-label">{{ $t("settings.lanEnabled") }}</span>
+          <n-switch v-model:value="settingStore.lanEnabled" />
+        </div>
+        <div class="info-row" v-if="settingStore.lanEnabled">
+          <span class="info-label">{{ $t("settings.lanPort") }}</span>
+          <n-input-number
+            v-model:value="settingStore.lanPort"
+            :min="1024"
+            :max="65535"
+            size="small"
+            style="width: 120px"
+          />
+        </div>
+        <div class="info-row" v-if="settingStore.lanEnabled">
+          <span class="info-label">{{ $t("settings.lanAddress") }}</span>
+          <n-text code style="font-size: 12px">
+            {{ lanAccessUrl }}
+          </n-text>
+        </div>
       </div>
     </n-card>
 

@@ -1,0 +1,3 @@
+[workspace]
+members = ["yt-dlp-shared", "src-tauri"]
+resolver = "2"
