@@ -101,6 +101,8 @@ jobs:
         run: |
           echo "📱 Building for iOS Simulator..."
           npx tauri ios build --debug -- \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
             DEVELOPMENT_TEAM=XXXXXXXXXX \
             CODE_SIGN_STYLE=Manual \
             CODE_SIGN_IDENTITY="" \
