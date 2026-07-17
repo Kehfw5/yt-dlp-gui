@@ -94,33 +94,21 @@ jobs:
           fi
 
       # ============================================================
-      # 模拟器构建（直接用 xcodebuild，跳过 tauri 的签名检查）
+      # 模拟器构建
       # ============================================================
       - name: Build for iOS Simulator
         if: env.CI_BUILD_TYPE == 'simulator'
         run: |
           echo "📱 Building for iOS Simulator..."
-          cd src-tauri/gen/apple
-          PROJECT=$(find . -name "*.xcodeproj" | head -1)
-          SCHEME="yt-dlp-gui_iOS"
-          echo "Project: $PROJECT, Scheme: $SCHEME"
-
-          xcodebuild build \
-            -project "$PROJECT" \
-            -scheme "$SCHEME" \
-            -sdk iphonesimulator \
-            -destination 'generic/platform=iOS Simulator' \
-            -configuration Debug \
-            DEVELOPMENT_TEAM=XXXXXXXXXX \
-            CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            CONFIGURATION_BUILD_DIR="$(pwd)/build" \
-            ONLY_ACTIVE_ARCH=NO
-
+          # 用 tauri ios build 构建（它会处理 Rust 编译、npm scripts、工作目录等）
+          # 通过环境变量禁用签名
+          DEVELOPMENT_TEAM=XXXXXXXXXX \
+          CODE_SIGN_STYLE=Manual \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO \
+            npx tauri ios build --debug
           echo "✅ Simulator build completed"
-          ls -la build/
 
       - name: Upload Simulator .app
         if: env.CI_BUILD_TYPE == 'simulator'
