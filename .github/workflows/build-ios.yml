@@ -101,7 +101,10 @@ jobs:
         if: env.CI_BUILD_TYPE == 'simulator'
         run: |
           echo "📱 Building for iOS Simulator (no signing needed)..."
-          npx tauri ios build
+          npx tauri ios build -- \
+            -- -destination 'generic/platform=iOS Simulator' \
+               CODE_SIGN_IDENTITY="" \
+               CODE_SIGNING_REQUIRED=NO
           echo "✅ Simulator build completed"
 
       - name: Upload Simulator .app
