@@ -91,8 +91,23 @@ jobs:
             cd src-tauri
             npx tauri ios init
             echo "✅ Created"
-            ls -la gen/apple/
           fi
+
+      # ============================================================
+      # 禁用 Xcode 项目签名（模拟器不需要）
+      # ============================================================
+      - name: Disable code signing for simulator
+        if: env.CI_BUILD_TYPE == 'simulator'
+        run: |
+          echo "🔧 Disabling code signing..."
+          PROJECT=$(find src-tauri/gen/apple -name "project.pbxproj" -path "*.xcodeproj/*" | head -1)
+          echo "Project file: $PROJECT"
+          # 改为手动签名 + 空证书
+          sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' "$PROJECT"
+          # 确保没有空的 DEVELOPMENT_TEAM 导致报错
+          sed -i '' '/DEVELOPMENT_TEAM = "";/d' "$PROJECT" || true
+          sed -i '' '/DEVELOPMENT_TEAM = \"\";/d' "$PROJECT" || true
+          echo "✅ Signing disabled"
 
       # ============================================================
       # 模拟器构建（无签名）
@@ -100,11 +115,13 @@ jobs:
       - name: Build for iOS Simulator
         if: env.CI_BUILD_TYPE == 'simulator'
         run: |
-          echo "📱 Building for iOS Simulator (no signing needed)..."
-          npx tauri ios build -- \
-            -- -destination 'generic/platform=iOS Simulator' \
-               CODE_SIGN_IDENTITY="" \
-               CODE_SIGNING_REQUIRED=NO
+          echo "📱 Building for iOS Simulator..."
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO \
+            npx tauri ios build -- \
+              -- -sdk iphonesimulator \
+                 -destination 'generic/platform=iOS Simulator'
           echo "✅ Simulator build completed"
 
       - name: Upload Simulator .app
