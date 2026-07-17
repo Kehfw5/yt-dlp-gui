@@ -84,14 +84,14 @@ jobs:
       # ============================================================
       - name: Initialize iOS Xcode project
         run: |
-          if [ -d "src-tauri/gen/ios" ]; then
+          if [ -d "src-tauri/gen/apple" ]; then
             echo "✅ iOS Xcode project already exists"
           else
             echo "📱 Creating iOS Xcode project..."
             cd src-tauri
             npx tauri ios init
             echo "✅ Created"
-            ls -la gen/ios/
+            ls -la gen/apple/
           fi
 
       # ============================================================
@@ -110,7 +110,7 @@ jobs:
         with:
           name: YDL-GUI-iOS-Simulator
           path: |
-            src-tauri/gen/ios/build/**/*.app
+            src-tauri/gen/apple/build/**/*.app
           retention-days: 14
 
       # ============================================================
@@ -158,9 +158,9 @@ jobs:
           echo "📱 Building for iOS Device..."
 
           # 配置 Xcode 项目的签名设置
-          if [ -f "src-tauri/gen/ios/"*.xcodeproj/project.pbxproj ]; then
+          if [ -f "src-tauri/gen/apple/"*.xcodeproj/project.pbxproj ]; then
             echo "🔧 Configuring Xcode project signing..."
-            cd src-tauri/gen/ios
+            cd src-tauri/gen/apple
             PROJECT_FILE=$(find . -name "project.pbxproj" -path "*.xcodeproj/*" | head -1)
 
             if [ -n "$PROJECT_FILE" ]; then
@@ -182,8 +182,8 @@ jobs:
         with:
           name: YDL-GUI-iOS-IPA
           path: |
-            src-tauri/gen/ios/build/**/*.ipa
-            src-tauri/gen/ios/build/**/*.app
+            src-tauri/gen/apple/build/**/*.ipa
+            src-tauri/gen/apple/build/**/*.app
           retention-days: 30
 
       # ============================================================
@@ -192,9 +192,9 @@ jobs:
       - name: Verify build
         run: |
           echo "📋 Build output:"
-          find src-tauri/gen/ios/build -type f 2>/dev/null | head -20 || echo "No build artifacts found"
+          find src-tauri/gen/apple/build -type f 2>/dev/null | head -20 || echo "No build artifacts found"
           if [ "$CI_BUILD_TYPE" = "device" ]; then
-            find src-tauri/gen/ios/build -name "*.ipa" -exec echo "📦 IPA: {}" \; 2>/dev/null || echo "⚠️  No IPA found"
+            find src-tauri/gen/apple/build -name "*.ipa" -exec echo "📦 IPA: {}" \; 2>/dev/null || echo "⚠️  No IPA found"
           else
-            find src-tauri/gen/ios/build -name "*.app" -exec echo "📱 App: {}" \; 2>/dev/null || echo "⚠️  No .app found"
+            find src-tauri/gen/apple/build -name "*.app" -exec echo "📱 App: {}" \; 2>/dev/null || echo "⚠️  No .app found"
           fi
